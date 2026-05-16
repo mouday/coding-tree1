@@ -258,10 +258,9 @@ int main()
 }
 ```
 
-gcc poll_s.c -o poll_s  && ./poll_s
-gcc poll_c.c -o poll_c  && ./poll_c
+启动服务端
 
-
+```shell
 % gcc poll_s.c -o poll_s  && ./poll_s
 success socket, ret: 3
 success bind, ret: 0
@@ -274,8 +273,11 @@ success accept, ret: 5
 received from 127.0.0.1 at PORT 57385
 success write, ret: 6
 success write, ret: 3
+```
 
+启动第一个客户端
 
+```shell
  % gcc poll_c.c -o poll_c  && ./poll_c
 success socket, ret: 3
 success connect, ret: 0
@@ -287,7 +289,11 @@ hi
 success write, ret: 3
 success read, ret: 3
 HI
+```
 
+启动第二个客户端
+
+```shell
 % gcc poll_c.c -o poll_c  && ./poll_c
 success socket, ret: 3
 success connect, ret: 0
@@ -299,3 +305,4 @@ hi
 success write, ret: 3
 success read, ret: 3
 HI
+```

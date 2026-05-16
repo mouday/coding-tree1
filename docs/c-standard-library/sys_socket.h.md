@@ -211,6 +211,54 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
 int close(int fd);
 ```
 
+## getsockopt
+
+获取socket的配置
+
+```cpp
+int getsockopt(int socket, int level, int option_name,
+    void *restrict option_value,
+    socklen_t *restrict option_len);
+```
+
+示例
+
+```cpp
+int bufsize =0;
+socklen_t optlen = sizeof(bufsize);
+// 获取发送缓冲区大小
+getsockopt(server_fd, SOL_SOCKET, SO_SNDBUF, &bufsize, &optlen);
+printf("send bufsize: %d\n", bufsize);
+
+// 获取接收缓冲区大小
+getsockopt(server_fd, SOL_SOCKET, SO_RCVBUF, &bufsize, &optlen);
+printf("receive bufsize: %d\n", bufsize);
+```
+
+## setsockopt
+
+```cpp
+int setsockopt(int socket, int level, int option_name, 
+    const void *option_value, socklen_t option_len);
+```
+
+示例
+
+```cpp
+// 绑定前清理TIME_WAIT，查看：netstat -an | grep 8080
+int opt = 1;
+ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+printf("setsockopt ret: %d\n", ret);
+
+
+// 禁用Nagle算法，适用于时效性很高的系统，如：联机器游戏
+#include <netinet/tcp.h>
+
+int opt = 1;
+ret = setsockopt(server_fd, IPPROTO_TCP, TCP_NODELAY, &opt, sizeof(opt));
+printf("setsockopt ret: %d\n", ret);
+```
+
 ## socket通信流程
 
 根据进程在网络通信中使用的协议，可将socket通信方式分为两种：一种是面向连接、基于TCP协议的通信；另一种是面向无连接、基于UDP协议的通信。

@@ -272,3 +272,57 @@ hi
 success write, ret: 3
 HI
 ```
+
+## 示例：异步读取文件
+
+```cpp
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+void *task(void *arg)
+{
+    // 以非阻塞方式打开
+    int fd = open("./demo.txt", O_RDONLY | O_NONBLOCK);
+
+    // 设置1秒超时
+    struct timeval tv = {.tv_sec = 1, .tv_usec = 0};
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    FD_SET(fd, &read_fds);
+
+    // 等待数据可读
+    int ready = select(fd + 1, &read_fds, NULL, NULL, &tv);
+    if (ready == -1)
+    {
+        perror("select错误");
+        close(fd);
+        return NULL;
+    }
+    else if (ready == 0)
+    {
+        perror("select超时");
+        close(fd);
+        return NULL;
+    }
+    char buffer[1024];
+
+    ssize_t n = read(fd, buffer, sizeof(buffer) - 1);
+    buffer[n] = '\0';
+    printf("result: %ld %s\n", n, buffer);
+    close(fd);
+    return NULL;
+}
+
+int main(int argc, char const *argv[])
+{
+    pthread_t tid;
+    pthread_create(&tid, NULL, task, NULL);
+
+    pthread_join(tid, NULL);
+    return 0;
+}
+
+```

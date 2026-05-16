@@ -101,3 +101,54 @@ int main(int argc, char const *argv[])
 g++ fstream_read.cpp -o fstream_read && ./fstream_read
 Hello, World!
 ```
+
+## tellg
+
+获取文件大小
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+streamsize get_file_size(string &filename)
+{
+    fstream file(filename, ios::in | ios::binary | ios::ate);
+    if (!file)
+    {
+
+        return -1;
+    }
+    streamsize size = file.tellg();
+    file.close();
+    return size;
+}
+
+int main(int argc, char const *argv[])
+{
+    string filename("test.txt");
+    streamsize file_size = get_file_size(filename);
+    cout << "file size: " << file_size << endl;
+
+    if (file_size > -1)
+    {
+        cout << "success" << endl;
+    }
+    else
+    {
+        cout << "open failed" << endl;
+    }
+
+    return 0;
+}
+```
+
+输出结果
+
+```shell
+$ g++ -std=c++11 filesize.cpp -o filesize && filesize
+file size: 11
+success
+```

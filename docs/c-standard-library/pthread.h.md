@@ -24,30 +24,30 @@
  *   attr用于设置待创建线程的属性，通常传入NULL，表示使用线程的默认属性；
  *   start_toutinue是一个函数指针，指向一个参数为void、返回值也为void*的函数，该函数为待创建线程的执行函数，线程创建成功后将会执行该函数中的代码；
  *   arg为要传给线程执行函数的参数
- * 
+ *
  * 返回
  *   成功，会返回0
  *   失败，则直接返回errno
  */
 int pthread_create(
-    pthread_t *thread, 
+    pthread_t *thread,
     const pthread_attr_t *attr,
-​    void *(*start_routine) (void *), 
+​    void *(*start_routine) (void *),
     void *arg
 );
 ```
 
-注意，由于errno的值很容易被修改，线程中很少使用errno来存储错误码，也不会使用perror()直接将其打印，而是使用自定义变量接收errno，再调用strerror()将获取到的错误码转换成错误信息，最后才打印错误信息。
+注意，由于 errno 的值很容易被修改，线程中很少使用 errno 来存储错误码，也不会使用 perror()直接将其打印，而是使用自定义变量接收 errno，再调用 strerror()将获取到的错误码转换成错误信息，最后才打印错误信息。
 
 ## pthread_self
 
-获取线程id
+获取线程 id
 
 ```cpp
 pthread_t pthread_self(void);
 ```
 
-进程id的类型pid_t实质是一个正整数，在整个系统中都是唯一的，但线程id只在当前进程中保证唯一，其类型pthread_t并非是一个正整数，且当前进程调用pthread_create()后获取到的thread为新线程id
+进程 id 的类型 pid_t 实质是一个正整数，在整个系统中都是唯一的，但线程 id 只在当前进程中保证唯一，其类型 pthread_t 并非是一个正整数，且当前进程调用 pthread_create()后获取到的 thread 为新线程 id
 
 示例
 
@@ -153,13 +153,13 @@ pthread_exit before
 
 ## pthread_cancel
 
-线程终止，使用该函数可以通过向指定线程发送CANCEL信号，使一个线程强行杀死另外一个线程
+线程终止，使用该函数可以通过向指定线程发送 CANCEL 信号，使一个线程强行杀死另外一个线程
 
 ```cpp
 /**
  * 参数
  *   thread为线程id，
- * 
+ *
  * 返回
  *   成功则返回0，否则返回errno
  */
@@ -171,7 +171,7 @@ int pthread_cancel(pthread_t thread);
 - pthread_exit()使线程主动退出
 - pthread_cancel()通过信号使线程被动退出，尽量避免使用
 
-与进程不同的是，调用pthread_cancel()函数杀死线程时，需要等待线程到达某个取消点，线程才会成功被终止
+与进程不同的是，调用 pthread_cancel()函数杀死线程时，需要等待线程到达某个取消点，线程才会成功被终止
 
 示例
 
@@ -232,15 +232,15 @@ child thread exit code = 1
 int pthread_join(pthread_t thread, void **retval);
 ```
 
-retval指针的值与thread线程的终止方式有关：
+retval 指针的值与 thread 线程的终止方式有关：
 
-- 若thread线程通过return返回，retval所指的存储单元中存放的是thread线程函数的返回值；
+- 若 thread 线程通过 return 返回，retval 所指的存储单元中存放的是 thread 线程函数的返回值；
 
-- 若thread线程被其它线程通过系统调用pthread_cancel()异常终止，retval所指向的存储单元中存放的是常量PTHREAD_CANCELED；
+- 若 thread 线程被其它线程通过系统调用 pthread_cancel()异常终止，retval 所指向的存储单元中存放的是常量 PTHREAD_CANCELED；
 
-- 若thread线程通过自调用pthread_exit()终止，retval所指向的存储单元中存放的是pthread_exit()中的参数ret_val；
+- 若 thread 线程通过自调用 pthread_exit()终止，retval 所指向的存储单元中存放的是 pthread_exit()中的参数 ret_val；
 
-- 此外，若等待thread的线程不关心它的终止状态，可以将retval的值设置为NULL。
+- 此外，若等待 thread 的线程不关心它的终止状态，可以将 retval 的值设置为 NULL。
 
 ```cpp
 #include <stdio.h>
@@ -289,7 +289,7 @@ retval: 100
 /**
  * 参数
  *   thread为待分离线程的id
- * 
+ *
  * 返回
  *   成功则返回0
  *   失败返回errno
@@ -297,7 +297,7 @@ retval: 100
 int pthread_detach(pthread_t thread);
 ```
 
-注意，pthread_join()不能终止已处于death状态的线程，若对处于分离态的线程调用pthread_join()函数，函数将会调用失败并返回EINVAL。
+注意，pthread_join()不能终止已处于 death 状态的线程，若对处于分离态的线程调用 pthread_join()函数，函数将会调用失败并返回 EINVAL。
 
 示例
 
@@ -350,9 +350,9 @@ int main(void)
 pthread_join error Invalid argument
 ```
 
-## __thread
+## \_\_thread
 
-`__thread`是GCC的扩展关键字，用于定义线程局部存储变量
+`__thread`是 GCC 的扩展关键字，用于定义线程局部存储变量
 
 示例
 
@@ -381,7 +381,7 @@ void *f2(void *arg)
 int main()
 {
     pthread_t pid1, pid2;
-    
+
     i += 3;
     pthread_create(&pid1, NULL, f1, NULL);
     pthread_create(&pid2, NULL, f2, NULL);
@@ -404,7 +404,7 @@ main i address 0x7fb4edf05fa0 val 3
 
 ## pthread_attr_t
 
-线程属性pthread_attr_t，该结构体中成员的值不能直接修改，须使用函数进行相关操作
+线程属性 pthread_attr_t，该结构体中成员的值不能直接修改，须使用函数进行相关操作
 
 ```cpp
 typedef struct
@@ -466,7 +466,7 @@ int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
 int pthread_attr_getdetachstate(pthread_attr_t *attr, int *detachstate);
 ```
 
-参数detachstate设置为
+参数 detachstate 设置为
 
 - PTHREAD_CREATE_DETACHED，线程创建后将以分离状态启动
 
@@ -484,7 +484,7 @@ int pthread_attr_setschedpolicy(pthread_attr_t *attr, int policy);
 int pthread_attr_getschedpolicy(pthread_attr_t *attr, int *policy);
 ```
 
-policy三种调度策略的含义分别如下：
+policy 三种调度策略的含义分别如下：
 
 - SCHED_OTHER，分时调度策略(默认值)；
 
@@ -492,12 +492,12 @@ policy三种调度策略的含义分别如下：
 
 - SCHED_RR，实时调度策略，按时间片轮询。
 
-其中分时调度策略通过nice值和counter值决定调度权值，nice值越小、counter越大，被调用的概率越高；实时调度策略通过实时优先级决定调度权值，若线程已准备就绪，除非有优先级相同或更高的线程正在运行，否则该线程很快便会执行。
+其中分时调度策略通过 nice 值和 counter 值决定调度权值，nice 值越小、counter 越大，被调用的概率越高；实时调度策略通过实时优先级决定调度权值，若线程已准备就绪，除非有优先级相同或更高的线程正在运行，否则该线程很快便会执行。
 
-而实时调度策略SCHED_FIFO与SCHED_RR的不同在于：
+而实时调度策略 SCHED_FIFO 与 SCHED_RR 的不同在于：
 
-- 调度策略为SCHED_FIFO的进程一旦获取cpu便会一直运行，除非有优先级更高的任务就绪或主动放弃cpu；
-- 调度策略为SCHED_RR的进程则根据时间片轮询，若线程占用cpu的时间超过一个时间片，该线程就会失去cpu，并被置于就绪队列队尾，确保与该进程优先级相同且调度策略为SCHED_FIFO或SCHED_RR能被公平调度。
+- 调度策略为 SCHED_FIFO 的进程一旦获取 cpu 便会一直运行，除非有优先级更高的任务就绪或主动放弃 cpu；
+- 调度策略为 SCHED_RR 的进程则根据时间片轮询，若线程占用 cpu 的时间超过一个时间片，该线程就会失去 cpu，并被置于就绪队列队尾，确保与该进程优先级相同且调度策略为 SCHED_FIFO 或 SCHED_RR 能被公平调度。
 
 ### 3、线程的调度参数
 
@@ -515,13 +515,13 @@ int pthread_attr_getschedparam(pthread_attr_t *attr,
 ​                               struct sched_param *param);
 ```
 
-线程的调度参数是一个struct sched_param类型的结构体，该结构体中只有一个成员sched_priority，该参数是一个整型变量，代表线程的优先级，仅当调度策略为SCHED_FIFO或SCHED_RR时成员sched_priority有效
+线程的调度参数是一个 struct sched_param 类型的结构体，该结构体中只有一个成员 sched_priority，该参数是一个整型变量，代表线程的优先级，仅当调度策略为 SCHED_FIFO 或 SCHED_RR 时成员 sched_priority 有效
 
 其中
 
-- 参数attr代表线程属性
-- 参数param代表线程的调度参数，param中成员sched_priority的默认值为0。
-- 若函数调用成功则返回0，否则返回errno。
+- 参数 attr 代表线程属性
+- 参数 param 代表线程的调度参数，param 中成员 sched_priority 的默认值为 0。
+- 若函数调用成功则返回 0，否则返回 errno。
 
 ### 4、线程的继承性
 
@@ -546,12 +546,13 @@ int pthread_attr_getinheritsched(pthread_attr_t *attr,int *inheritsched);
 
 其中
 
-- 参数attr代表线程属性
-- 参数inheritsched代表线程的继承性，该参数的常用取值为
-  - PTHREAD_INHERIT_SCHED：使新线程继承其父线程中的调度策略和调度参数
-  - PTHREAD_EXPLICIT_SCHED：使用在attr属性中显示设置的调度策略和调度参数
+- 参数 attr 代表线程属性
+- 参数 inheritsched 代表线程的继承性，该参数的常用取值为
 
-- 若函数调用成功则返回0，否则返回errno。
+  - PTHREAD_INHERIT_SCHED：使新线程继承其父线程中的调度策略和调度参数
+  - PTHREAD_EXPLICIT_SCHED：使用在 attr 属性中显示设置的调度策略和调度参数
+
+- 若函数调用成功则返回 0，否则返回 errno。
 
 ### 5、线程的作用域
 
@@ -569,12 +570,13 @@ int pthread_attr_getscope(pthread_attr_t *attr, int *scope);
 
 其中
 
-- 参数attr代表线程属性；
-- 参数scope代表线程的作用域，该参数常用的取值为
+- 参数 attr 代表线程属性；
+- 参数 scope 代表线程的作用域，该参数常用的取值为
+
   - PTHREAD_SCOPE_PROCESS: 在进程中竞争资源
   - PTHREAD_SCOPE_SYSTEM: 在系统层级竞争资源。
 
-- 若函数调用成功则返回0，否则返回-1。
+- 若函数调用成功则返回 0，否则返回-1。
 
 ### 6、线程的栈空间
 
@@ -594,9 +596,9 @@ int pthread_attr_getstacksize(pthread_attr_t *attr, size_t *stacksize);
 
 其中
 
-- 参数attr代表线程属性
-- 参数stacksize代表栈空间大小。
-- 若函数调用成功则返回0，否则返回errno。
+- 参数 attr 代表线程属性
+- 参数 stacksize 代表栈空间大小。
+- 若函数调用成功则返回 0，否则返回 errno。
 
 ### 7、栈地址
 
@@ -612,7 +614,7 @@ int pthread_attr_setstackaddr(pthread_attr_t *attr, void *stackaddr);
 int pthread_attr_getstackaddr(pthread_attr_t *attr, void **stackaddr);
 ```
 
-当改变栈地址属性时，栈警戒区大小通常会被清零。若函数调用成功则返回0，否则返回errno。
+当改变栈地址属性时，栈警戒区大小通常会被清零。若函数调用成功则返回 0，否则返回 errno。
 
 ### 8、栈末尾警戒区大小
 
@@ -646,10 +648,10 @@ int pthread_attr_getstack(pthread_attr_t *attr,
 
 其中:
 
-- 参数attr: 线程属性
-- 参数stackaddr: 栈空间地址
-- 参数stacksize: 栈空间容量
-- 若函数调用成功则返回0，否则返回errno。
+- 参数 attr: 线程属性
+- 参数 stackaddr: 栈空间地址
+- 参数 stacksize: 栈空间容量
+- 若函数调用成功则返回 0，否则返回 errno。
 
 示例
 
@@ -725,7 +727,7 @@ Thread is running
 
 使用互斥锁实现线程同步时，系统会为共享资源添加一个称为互斥锁的标记，防止多个线程在同一时刻访问相同的共用资源。
 
-互斥锁通常也被称为互斥量（mutex），它相当于一把锁，使用互斥锁可以保证以下3点：
+互斥锁通常也被称为互斥量（mutex），它相当于一把锁，使用互斥锁可以保证以下 3 点：
 
 - （1）原子性：如果在一个线程设置了一个互斥锁，那么在加锁与解锁之间的操作会被锁定为一个原子操作，这些操作要么全部完成，要么一个也不执行；
 - （2）唯一性：如果为一个线程锁定了一个互斥锁，在解除锁定之前，没有其它线程可以锁定这个互斥量；
@@ -753,20 +755,20 @@ int pthread_mutex_init(pthread_mutex_t *restrict mutex,
 ​              const pthread_mutexattr_t *restrict attr);
 ```
 
-关于参数mutex有以下几个要点：
+关于参数 mutex 有以下几个要点：
 
-- pthread_mutext_t类型的本质是结构体，为简化理解，读者可将其视为整型；
-- pthread_mutex_t类型的变量mutex只有两种取值：0和1，
+- pthread_mutext_t 类型的本质是结构体，为简化理解，读者可将其视为整型；
+- pthread_mutex_t 类型的变量 mutex 只有两种取值：0 和 1，
   - 加锁操作可视为`mutex-1`；
   - 解锁操作可视为`mutex+1`；
-- 参数mutex之前的restrict是一个关键字，该关键字用于限制指针，其功能为告诉编译器，所有修改该指针指向内存中内容的操作，只能通过本指针完成。
+- 参数 mutex 之前的 restrict 是一个关键字，该关键字用于限制指针，其功能为告诉编译器，所有修改该指针指向内存中内容的操作，只能通过本指针完成。
 
-errno的常见取值为:
+errno 的常见取值为:
 
-- EAGAIN表示超出互斥锁递归锁定的最大次数，因此无法获取该互斥锁；
-- EDEADLK表示当前线程已有互斥锁，二次加锁失败。
+- EAGAIN 表示超出互斥锁递归锁定的最大次数，因此无法获取该互斥锁；
+- EDEADLK 表示当前线程已有互斥锁，二次加锁失败。
 
-通过pthread_mutex_init()函数初始化互斥量又称为`动态初始化`，一般用于初始化局部变量，示例如下：
+通过 pthread_mutex_init()函数初始化互斥量又称为`动态初始化`，一般用于初始化局部变量，示例如下：
 
 ```cpp
 pthread_mutex_init(&mutex, NULL);
@@ -792,7 +794,7 @@ pthead_mutex_t muetx = PTHREAD_MUTEX_INITIALIZER;
 int pthread_mutex_lock(pthread_mutex_t *mutex);
 ```
 
-程序中调用函数pthread_mutex_lock 后，直至程序中调用pthread_mutex_unlock()函数之前，此间的代码均被上锁，即在同一时刻只能被一个线程执行。
+程序中调用函数 pthread_mutex_lock 后，直至程序中调用 pthread_mutex_unlock()函数之前，此间的代码均被上锁，即在同一时刻只能被一个线程执行。
 
 ### pthread_mutex_trylock
 
@@ -804,13 +806,13 @@ int pthread_mutex_lock(pthread_mutex_t *mutex);
 int pthread_mutex_trylock(pthread_mutex_t *mutex);
 ```
 
-若需要使用的互斥锁正在被使用，调用pthread_mutxe_lock()函数的线程会进入阻塞，但有些情况下，我们希望线程可以先去执行其它功能，此时需要使用非阻塞的互斥锁。
+若需要使用的互斥锁正在被使用，调用 pthread_mutxe_lock()函数的线程会进入阻塞，但有些情况下，我们希望线程可以先去执行其它功能，此时需要使用非阻塞的互斥锁。
 
-Linux系统中提供了pthread_mutex_trylock()函数，该函数的功能为尝试加锁，若锁正在被使用，不阻塞等待，而是直接返回并返回错误号。
+Linux 系统中提供了 pthread_mutex_trylock()函数，该函数的功能为尝试加锁，若锁正在被使用，不阻塞等待，而是直接返回并返回错误号。
 
-其中常见的errno有两个，分别为:
+其中常见的 errno 有两个，分别为:
 
-- EBUSY：参数mutex指向的互斥锁已锁定；
+- EBUSY：参数 mutex 指向的互斥锁已锁定；
 - EAGAIN：超过互斥锁递归锁定的最大次数。
 
 ### pthread_mutex_unlock
@@ -843,10 +845,10 @@ int pthread_mutex_destroy(pthread_mutex_t *mutex);
 
 两个线程输出文字：
 
-- 线程1: 预期输出 hello world
-- 线程2: 预期输出 HELLO WORLD
+- 线程 1: 预期输出 hello world
+- 线程 2: 预期输出 HELLO WORLD
 
-示例1：未加锁
+示例 1：未加锁
 
 ```cpp
 #include <pthread.h>
@@ -893,7 +895,7 @@ hello HELLO world
 WORLD
 ```
 
-示例2：加锁
+示例 2：加锁
 
 ```cpp
 #include <pthread.h>
@@ -958,6 +960,125 @@ hello world
 HELLO WORLD
 ```
 
+## 读写锁
+
+### pthread_rwlock_t
+
+读写锁：
+
+- 读线程可以同时获取读锁进行数据读取
+- 写线程独占资源
+
+### pthread_rwlock_init
+
+```cpp
+int pthread_rwlock_init(
+    pthread_rwlock_t * __restrict,
+    const pthread_rwlockattr_t * _Nullable __restrict
+);
+```
+
+### pthread_rwlock_rdlock
+
+```cpp
+int pthread_rwlock_rdlock(pthread_rwlock_t *);
+```
+
+### pthread_rwlock_tryrdlock
+
+```cpp
+int pthread_rwlock_tryrdlock(pthread_rwlock_t *);
+```
+
+### pthread_rwlock_trywrlock
+
+```cpp
+int pthread_rwlock_trywrlock(pthread_rwlock_t *);
+```
+
+### pthread_rwlock_wrlock
+
+```cpp
+int pthread_rwlock_wrlock(pthread_rwlock_t *);
+```
+
+### pthread_rwlock_unlock
+
+```cpp
+int pthread_rwlock_unlock(pthread_rwlock_t *);
+```
+
+### pthread_rwlock_destroy
+
+```cpp
+int pthread_rwlock_destroy(pthread_rwlock_t * );
+```
+
+### 示例
+
+```cpp
+// thread_rwlock.c
+
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+// 初始化读写
+pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
+
+int shared_lock = 0;
+
+void *read_task(void *arg)
+{
+    pthread_rwlock_rdlock(&rwlock);
+    printf("read shared_lock: %d\n", shared_lock);
+    sleep(3);
+    pthread_rwlock_unlock(&rwlock);
+
+    return NULL;
+}
+
+void *write_task(void *arg)
+{
+    pthread_rwlock_wrlock(&rwlock);
+    shared_lock++;
+    printf("write shared_lock: %d\n", shared_lock);
+    sleep(3);
+    pthread_rwlock_unlock(&rwlock);
+
+    return NULL;
+}
+
+int main(int argc, char const *argv[])
+{
+    pthread_t tid_read1;
+    pthread_t tid_read2;
+    pthread_t tid_write;
+
+    pthread_create(&tid_read1, NULL, read_task, NULL);
+    pthread_create(&tid_read2, NULL, read_task, NULL);
+    pthread_create(&tid_write, NULL, write_task, NULL);
+
+    pthread_join(tid_read1, NULL);
+    pthread_join(tid_read2, NULL);
+    pthread_join(tid_write, NULL);
+
+    pthread_rwlock_destroy(&rwlock);
+    return 0;
+}
+```
+
+执行结果
+
+```shell
+$ gcc thread_rwlock.c -o thread_rwlock && ./thread_rwlock
+
+write shared_lock: 1
+read shared_lock: 1
+read shared_lock: 1
+```
+
 ## 条件变量
 
 使用条件变量控制线程同步时，线程访问共享资源的前提，是程序中设置的条件变量得到满足。条件变量不会对共享资源加锁，但也会使线程阻塞，若线程不满足条件变量规定的条件，就会进入阻塞状态直到条件满足。
@@ -986,20 +1107,20 @@ HELLO WORLD
  * 参数attr代表条件变量的属性，通常设置为NULL，表示使用默认属性初始化条件变量
  *   - PTHREAD_PROCESS_PRIVATE，默认值，当前进程中的线程共用此条件变量；
  *   - PTHREAD_PROCESS_SHARED，表示多个进程间的线程共用条件变量。
- * 
+ *
  * 成功则返回0，否则返回-1，并设置errno
  */
 int pthread_cond_init(pthread_cond_t *restrict cond,
 ​             const pthread_condattr_t *restrict attr);
 ```
 
-除使用函数pthread_cond_init()动态初始化条件变量外，也可以使用如下语句以静态方法初始化条件变量：
+除使用函数 pthread_cond_init()动态初始化条件变量外，也可以使用如下语句以静态方法初始化条件变量：
 
 ```cpp
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 ```
 
-此种方式与将attr参数初始化为NULL的pthread_cond_init()函数等效，但是不进行错误检查。
+此种方式与将 attr 参数初始化为 NULL 的 pthread_cond_init()函数等效，但是不进行错误检查。
 
 ### pthread_cond_wait
 
@@ -1009,26 +1130,26 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 /**
  * 参数cond代表条件变量；
  * 参数mutex代表与当前线程绑定的互斥锁。
- * 
+ *
  * 成功则返回0，否则返回-1，并设置errno。
  */
 int pthread_cond_wait(pthread_cond_t *restrict cond,
 ​              pthread_mutex_t *restrict mutex);
 ```
 
-pthread_cond_wait()类似于互斥锁中的函数pthread_mutex_lock()，但其功能更为丰富，它的工作机制如下：
+pthread_cond_wait()类似于互斥锁中的函数 pthread_mutex_lock()，但其功能更为丰富，它的工作机制如下：
 
-（1）阻塞等待条件变量cond满足；
+（1）阻塞等待条件变量 cond 满足；
 
-（2）解除已绑定的互斥锁（类似于pthread_mutex_unlock()）；
+（2）解除已绑定的互斥锁（类似于 pthread_mutex_unlock()）；
 
 （3）当线程被唤醒，pthread_cond_wait()函数返回，pthread_cond_wait()函数同时会解除线程阻塞，并使线程重新申请绑定互斥锁。
 
-以上工作机制中，前两条为一个原子操作；需要注意的最后一条，最后一条机制表明：当线程被唤醒后，仍需重新绑定互斥锁。这是因为，“线程被唤醒”及“绑定互斥锁”并不是一个原子操作，条件变量满足后也许会有多个处于运行态的线程出现，并竞争互斥锁，极有可能在线程B绑定互斥锁之前，线程A已经执行了以下操作：
+以上工作机制中，前两条为一个原子操作；需要注意的最后一条，最后一条机制表明：当线程被唤醒后，仍需重新绑定互斥锁。这是因为，“线程被唤醒”及“绑定互斥锁”并不是一个原子操作，条件变量满足后也许会有多个处于运行态的线程出现，并竞争互斥锁，极有可能在线程 B 绑定互斥锁之前，线程 A 已经执行了以下操作：
 
 获取互斥锁——修改条件变量——解除互斥锁
 
-此时线程B即便获取到互斥锁，条件变量仍不满足，线程B应继续阻塞等待。综上所述，再次检测条件变量的状况是极有必要的。
+此时线程 B 即便获取到互斥锁，条件变量仍不满足，线程 B 应继续阻塞等待。综上所述，再次检测条件变量的状况是极有必要的。
 
 ![](https://mouday.github.io/img/2025/08/20/dm3sel9.png)
 
@@ -1176,4 +1297,73 @@ producer: 78
 comsumer: 78
 producer: 16
 comsumer: 16
+```
+
+### 示例：死锁
+
+解决办法：按照统一的先后顺序获取锁
+
+```cpp
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+// 初始化2把互斥锁
+pthread_mutex_t mutex_a = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_b = PTHREAD_MUTEX_INITIALIZER;
+
+// 先加a锁再加b锁
+void *task_a(void *arg)
+{
+    pthread_mutex_lock(&mutex_a);
+    printf("task_a mutex_a lock\n");
+    sleep(1);
+    pthread_mutex_lock(&mutex_b);
+
+    printf("task_a do\n");
+    pthread_mutex_unlock(&mutex_b);
+
+    pthread_mutex_unlock(&mutex_a);
+
+    return NULL;
+}
+
+// 先加b锁再加a锁
+void *task_b(void *arg)
+{
+    pthread_mutex_lock(&mutex_b);
+    printf("task_a mutex_b lock\n");
+    sleep(1);
+    pthread_mutex_lock(&mutex_a);
+
+    printf("task_b do\n");
+    pthread_mutex_unlock(&mutex_a);
+
+    pthread_mutex_unlock(&mutex_b);
+
+    return NULL;
+}
+
+int main(int argc, char const *argv[])
+{
+    pthread_t tid_a;
+    pthread_t tid_b;
+    pthread_create(&tid_a, NULL, task_a, NULL);
+    pthread_create(&tid_b, NULL, task_b, NULL);
+
+    pthread_join(tid_a, NULL);
+    pthread_join(tid_b, NULL);
+    return 0;
+}
+
+```
+
+执行结果
+
+```shell
+$ gcc thread_lock.c -o thread_lock && ./thread_lock
+
+task_a mutex_a lock
+task_a mutex_b lock
 ```

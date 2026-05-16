@@ -1371,6 +1371,68 @@ export C_INCLUDE_PATH=/usr/local/include:$C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH=/usr/local/include:$CPLUS_INCLUDE_PATH
 ```
 
+### 设置C++11支持: CMake 2.8
+
+CMake 2.8没有内置的C++11支持开关，你需要手动检查并添加`-std=c++11`编译标志。以下是一个通用的配置模板
+
+```shell
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
+endif()
+```
+
+高版本
+
+```shell
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+```
+
+### 设置编译类型
+
+使用`CMAKE_BUILD_TYPE`变量可以快速切换Debug和Release模式。
+
+```shell
+set(CMAKE_BUILD_TYPE "Debug") # 或 "Release"
+```
+
+### 最佳实践
+
+建议创建build目录进行外部构建（Out-of-Source Build）。这样可以保持源代码目录整洁，方便清理。
+
+```shell
+mkdir build && cd build
+cmake ..
+make
+```
+
+### 条件编译
+
+```cpp
+#include <iostream>
+
+int main() {
+#ifdef __APPLE__
+    std::cout << "Running on macOS / Apple platform" << std::endl;
+#elif _WIN32
+    std::cout << "Running on Windows" << std::endl;
+#elif __linux__
+    std::cout << "Running on Linux" << std::endl;
+#else
+    std::cout << "Unknown platform" << std::endl;
+#endif
+    return 0;
+}
+```
+
 ## 参考资料
 
 CMake 简明教程笔记
