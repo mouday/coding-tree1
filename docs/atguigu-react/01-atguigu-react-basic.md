@@ -1,4 +1,4 @@
-# React 基础篇-基于 CDN
+# React基础篇-基于CDN
 
 ## 1、React 入门
 
@@ -354,7 +354,7 @@ class Student extends Person {
   // 覆写父类方法
   speek() {
     console.log(
-      `我的名字是:${this.name}, 今年${this.age}岁了, 我的年级是:${this.grade}`
+      `我的名字是:${this.name}, 今年${this.age}岁了, 我的年级是:${this.grade}`,
     );
   }
 
