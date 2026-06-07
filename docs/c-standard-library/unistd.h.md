@@ -2,9 +2,9 @@
 
 注意事项
 
-- 可移植性：unistd.h 是 POSIX 标准的一部分，在 Windows 系统中不可用（虽然有类似的实现如 io.h）
-- 错误处理：大多数 unistd.h 函数在出错时返回 -1 并设置 errno
-- 头文件依赖：通常需要与其他头文件如 fcntl.h、sys/types.h 等一起使用
+- 可移植性：`unistd.h` 是 POSIX 标准的一部分，在 Windows 系统中不可用（虽然有类似的实现如 `io.h`）
+- 错误处理：大多数 `unistd.h` 函数在出错时返回 -1 并设置 `errno`
+- 头文件依赖：通常需要与其他头文件如 `fcntl.h`、`sys/types.h` 等一起使用
 - 权限问题：许多函数需要适当的权限才能执行特定操作
 
 ## 目录操作
@@ -54,8 +54,12 @@ $ gcc main.c -o main && ./main
 /Users/tom/workspace
 ```
 
+### chdir
+
+```cpp
 // 改变当前工作目录
 int chdir(const char *path);
+```
 
 ## 进程控制
 
@@ -402,12 +406,19 @@ buf=Hello, World!
 
 ```
 
+### symlink
+
+```cpp
 // 创建符号链接
 int symlink(const char *target, const char *linkpath);
+```
 
+### readlink
+
+```cpp
 // 读取符号链接
 ssize_t readlink(const char *pathname, char *buf, size_t bufsiz);
-
+```
 
 ## 系统信息
 
@@ -419,19 +430,26 @@ ssize_t readlink(const char *pathname, char *buf, size_t bufsiz);
 uid_t getuid(void);
 ```
 
+### geteuid
+
 // 获取有效用户ID
 uid_t geteuid(void);
+
+### getgid
 
 // 获取组ID
 gid_t getgid(void);
 
+### getegid
+
 // 获取有效组ID
 gid_t getegid(void);
 
-// 获取主机名
-int gethostname(char *name, size_t len);
+### gethostname
 
 ```cpp
+// 获取主机名
+int gethostname(char *name, size_t len);
 
 ```
 
@@ -665,6 +683,42 @@ int main(int argc, char const *argv[])
 
    close(fd);
 
+    return 0;
+}
+```
+
+### fsync
+
+强制从内核缓冲区同步到磁盘
+
+```cpp
+/**
+ * 成功：返回0
+ * 失败：返回-1，并设置errno
+ */
+int fsync(int fd);
+```
+
+示例
+
+```cpp
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char const *argv[])
+{
+    int fd = open("demo.txt", O_WRONLY | O_CREAT | O_APPEND, 0660);
+    char *text = "hello world";
+    write(fd, text, strlen(text));
+    write(fd, "\n", 1);
+
+    if (fsync(fd) != 0)
+    {
+        perror("fsync error");
+    }
+    close(fd);
     return 0;
 }
 ```

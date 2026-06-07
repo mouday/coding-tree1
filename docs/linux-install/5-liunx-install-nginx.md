@@ -5,25 +5,27 @@
 - Nginx配置文件
 - Nginx具体应用
 
-## 准备www用户
-
-1、添加用户组和用户
-
-```bash
-$ groupadd www
-
-$ useradd www -g www -s /sbin/nologin
-
-$ id www
-```
-
 ## Nginx概述
 
 轻量级的Web服务器
 
 官网：http://nginx.org
 
-## docker安装
+## 安装
+
+### 准备www用户
+
+1、添加用户组和用户
+
+```bash
+groupadd www
+
+useradd www -g www -s /sbin/nologin
+
+id www
+```
+
+### docker安装
 
 ```bash
 # 启动docker容器
@@ -38,7 +40,7 @@ centos:centos7 /usr/sbin/init
 $ docker exec -it nginx /bin/bash
 ```
 
-## 源码编译安装
+### 源码编译安装
 
 ```bash
 # 安装依赖
@@ -82,29 +84,7 @@ yum install -y gcc gcc-c++ zlib zlib-devel openssl openssl-devel pcre pcre-devel
 && /usr/local/nginx/v1.22.1/sbin/nginx -v
 ```
 
-目录结构
-
-```bash
-# yum install -y tree
-$ tree
-.
-|-- conf
-|   |-- nginx.conf   # 配置文件
-|-- html             # 静态文件目录（html、css、js）
-|-- logs             # 日志目录
-|-- sbin
-    |-- nginx        # 二进制文件，启动、停止Nginx服务
-```
-
-引入vhost配置文件
-
-```bash
-# nginx.conf
-include vhost/*.conf;
-```
-
-
-## 开机自启
+### 开机自启
 
 vi /etc/systemd/system/nginx.service
 
@@ -113,14 +93,14 @@ vi /etc/systemd/system/nginx.service
 [Unit]
 Description=nginx
 After=network.target
- 
+
 [Service]
 Type=forking
 ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 ExecReload=/usr/local/nginx/sbin/nginx -s reload
 ExecStop=/usr/local/nginx/sbin/nginx -s quit
 PrivateTmp=true
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -162,6 +142,27 @@ nginx -s reload
 
 ## Nginx配置文件结构
 
+目录结构
+
+```bash
+# yum install -y tree
+$ tree
+.
+|-- conf
+|   |-- nginx.conf   # 配置文件
+|-- html             # 静态文件目录（html、css、js）
+|-- logs             # 日志目录
+|-- sbin
+    |-- nginx        # 二进制文件，启动、停止Nginx服务
+```
+
+引入vhost配置文件
+
+```bash
+# nginx.conf
+include vhost/*.conf;
+```
+
 nginx.conf
 
 ```bash
@@ -191,7 +192,7 @@ ps -ef |grep nginx
 示例
 
 ```bash
-server { 
+server {
     listen 80;               # 监听端口
     server_name localhost;   # 服务名称
     location / {             # 匹配客户端请求url
@@ -209,7 +210,7 @@ server {
 
 ### 反向代理
 
-正向代理 
+正向代理
 
 ```
 客户端 -> 【客户端】代理服务器 -> 服务端（www.google.com）
@@ -241,7 +242,7 @@ server {
 - 负载均衡器：将用户请求根据对应的负载均衡算法分发到应用集群中的一台服务器进行处理
 
 ```
-                   -> web服务器1 
+                   -> web服务器1
 客户端 -> 负载均衡器  -> web服务器2
                    -> web服务器3
 ```
@@ -266,15 +267,14 @@ server {
 
 负载均衡策略
 
-| 策略名称 | 说明 |
-| - | -  |
-| 轮询 | 默认方式 |
-| weight | 权重方式 |
-| ip_hash | 依据ip分配方式 |
+| 策略名称   | 说明             |
+| ---------- | ---------------- |
+| 轮询       | 默认方式         |
+| weight     | 权重方式         |
+| ip_hash    | 依据ip分配方式   |
 | least_conn | 依据最少连接方式 |
-| url_hash | 依据url分配方式 |
-| fair | 依据响应时间方式 |
-
+| url_hash   | 依据url分配方式  |
+| fair       | 依据响应时间方式 |
 
 示例：依据权重分发
 
@@ -286,10 +286,8 @@ upstream targetserver {
 }
 ```
 
-
-
-
 ### default_server
+
 ```bash
 server {
     listen 80 default_server;
@@ -305,7 +303,55 @@ server {
 
 ```
 
-### 常用配置示例
+## 常用配置
+
+### 单域名网站配置
+
+```bash
+server {
+  listen 80;
+  listen 443 ssl http2;
+
+  server_name www.demo.com;
+
+  ssl_certificate /usr/local/nginx/ssl/www.demo.com.pem;
+  ssl_certificate_key /usr/local/nginx/ssl/www.demo.com.key;
+
+
+   if ($ssl_protocol = "") { return 301 https://$host$request_uri; }
+ 
+   location / {
+      alias /data/www/www.demo.com/
+      try_files $uri $uri/ /index.html;
+    }
+
+    location ~ .*\.(html)$ {
+        add_header Cache-Control no-cache;
+        add_header Pragma no-cache;
+    }
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|mp4|ico|apk)$ {
+        expires 30d;
+        access_log off;
+    }
+
+    location ~ .*\.(js|css)?$ {
+        expires 7d;
+        access_log off;
+    }
+
+    location ~ /(\.user\.ini|\.ht|\.git|\.svn|\.project|LICENSE|README\.md) {
+        deny all;
+    }
+
+    location /.well-known/acme-challenge/ {
+        alias /var/www/challenges/;
+        try_files $uri =404;
+    }
+}
+```
+
+### 双域名网站配置
 
 ```bash
 server {
@@ -330,79 +376,79 @@ server
     if ($ssl_protocol = "") { return 301 https://$host$request_uri; }
 
     location / {
-     root /data/wwwroot/domain-www;
-     index  index.html index.htm;
+        root /data/wwwroot/domain-www;
+        index  index.html index.htm;
     }
-    
+
     # admin
     location ^~/admin {
-      alias /data/wwwroot/domain-admin;
-      try_files $uri $uri/ /admin/index.html;
+        alias /data/wwwroot/domain-admin;
+        try_files $uri $uri/ /admin/index.html;
     }
 
- location /api/ {
-  add_header Access-Control-Allow-Origin '*';
-  add_header Access-Control-Max-Age 86400;
-  add_header Access-Control-Allow-Credentials "true";
-  add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-  add_header Access-Control-Allow-Headers  'X-Token,Content-Type,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,XRequested-With';
+    location /api/ {
+        add_header Access-Control-Allow-Origin '*';
+        add_header Access-Control-Max-Age 86400;
+        add_header Access-Control-Allow-Credentials "true";
+        add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+        add_header Access-Control-Allow-Headers  'X-Token,Content-Type,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,XRequested-With';
 
-  if ($request_method = 'OPTIONS') {
-     return 204;
-  }
+        if ($request_method = 'OPTIONS') {
+            return 204;
+        }
 
-    proxy_pass http://localhost:8080/api/;
-    proxy_set_header Host $host:$server_port;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
+        proxy_pass http://localhost:8080/api/;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
 
-  location ~ .*\.(html)$ {
-   add_header Cache-Control no-cache;
-   add_header Pragma no-cache;
-  }
+    location ~ .*\.(html)$ {
+        add_header Cache-Control no-cache;
+        add_header Pragma no-cache;
+    }
 
-   location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|mp4|ico)$ {
-    expires 30d;
-    access_log off;
-  }
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|mp4|ico)$ {
+        expires 30d;
+        access_log off;
+    }
 
-  location ~ .*\.(js|css)?$ {
-    expires 7d;
-    access_log off;
-  }
+    location ~ .*\.(js|css)?$ {
+        expires 7d;
+        access_log off;
+    }
 
-  location ~ /\.ht {
-    deny all;
-  }
+    location ~ /\.ht {
+        deny all;
+    }
 
-  location /.well-known/acme-challenge/ {
-      alias /var/www/challenges/;
-      try_files $uri = 404;
-  }
+    location /.well-known/acme-challenge/ {
+        alias /var/www/challenges/;
+        try_files $uri = 404;
+    }
 }
 ```
 
-添加ssl证书
+### 添加ssl证书
 
 ```bash
 server {
     listen  443 ssl;
     server_name yourdomain.com;
-    
+
     # 设置ssl证书文件路径
     ssl_certificate certs/yourdomain.com.pem;
     ssl_certificate_key certs/yourdomain.com.key;
-    
+
     ssl_session_timeout 5m;
     ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
     ssl_ciphers EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
     ssl_prefer_server_ciphers on;
     add_header Strict-Transport-Security "max-age=31536000";
-    
+
     # 访问日志
     access_log /var/log/nginx/yourdomain.com.https.log;
-    
+
     location / {
         root /var/html/yourdomain.com/;
         index index.html;
@@ -410,7 +456,8 @@ server {
 }
 ```
 
-http重定向https
+### http重定向https
+
 ```bash
 server {
     listen 80;
@@ -420,7 +467,7 @@ server {
 }
 ```
 
-后端服务接口
+### 后端服务接口
 
 ```bash
 location /v1/ {
@@ -434,7 +481,8 @@ location /v1/ {
 }
 ```
 
-WebSocket
+### WebSocket
+
 ```bash
 location /v1/ {
     proxy_pass http://127.0.0.1:8080/;
@@ -444,7 +492,7 @@ location /v1/ {
 }
 ```
 
-SSE
+### SSE
 
 ```bash
 location /sse/ {
@@ -453,7 +501,7 @@ location /sse/ {
 }
 ```
 
-开启gzip
+### 开启gzip
 
 ```bash
 gzip on;

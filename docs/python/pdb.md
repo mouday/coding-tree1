@@ -18,6 +18,7 @@ python -m pdb script.py
 
 ```python
 import pdb; pdb.set_trace()   # 经典写法
+
 breakpoint()                  # Python 3.7+ 推荐写法
 ```
 
