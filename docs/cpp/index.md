@@ -6,8 +6,6 @@
 
 [CPP 标准库](../cpp-standard-library/index.md)
 
-[C++ 教程](../cpp-ref/index.md)
-
 [C 参考文档](../c-ref/index.md)
 
 [课程笔记：C++零基础入门到精通](../cpp-start/index.md)

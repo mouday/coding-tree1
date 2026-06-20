@@ -1,4 +1,4 @@
-# /dev/urandom
+# urandom
 
 生成伪随机数
 

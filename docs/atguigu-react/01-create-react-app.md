@@ -1,6 +1,6 @@
 [返回目录](/blog/react/atguigu-react)
 
-# 1、React 脚手架学习
+# 1、React 脚手架
 
 ## 1.1、创建一个脚手架项目
 

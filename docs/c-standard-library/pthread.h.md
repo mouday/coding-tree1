@@ -1205,7 +1205,9 @@ int pthread_cond_signal(pthread_cond_t *cond);
 int pthread_cond_broadcast(pthread_cond_t *cond);
 ```
 
-### 示例
+## 示例
+
+### 生产者-消费者
 
 生产者-消费者模型，两个线程，消费者必须等待消费者生产数据后才能消费
 
@@ -1299,7 +1301,7 @@ producer: 16
 comsumer: 16
 ```
 
-### 示例：死锁
+### 死锁
 
 解决办法：按照统一的先后顺序获取锁
 
@@ -1366,4 +1368,53 @@ $ gcc thread_lock.c -o thread_lock && ./thread_lock
 
 task_a mutex_a lock
 task_a mutex_b lock
+```
+
+### 多线程示例
+
+```cpp
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/syscall.h> // linux
+
+void *run_task(void *arg)
+{
+    pid_t pid = getpid();
+    pid_t tid = syscall(SYS_gettid); // linux
+    pthread_t p_tid = pthread_self();
+
+    printf("pid: %d, tid: %d, p_tid: %lu\n", pid, tid, p_tid);
+    return NULL;
+}
+
+int main(int argc, char const *argv[])
+{
+    int nthread = 2;
+    pthread_t t[nthread];
+    for (int i = 0; i < nthread; i++)
+    {
+        int ret = pthread_create(&t[i], NULL, run_task, NULL);
+        printf("ret: %d\n", ret);
+    }
+
+    for (int i = 0; i < nthread; i++)
+    {
+        pthread_join(t[i], NULL);
+    }
+
+    printf("success\n");
+
+    return 0;
+}
+```
+
+输出结果
+
+```shell
+gcc thread.c -o thread -lpthread && ./thread  
+
+pid: 108, tid: 109, p_tid: 140525890864704
+pid: 108, tid: 110, p_tid: 140525882472000
+success
 ```
