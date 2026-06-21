@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="100%" height="auto" style="max-width:800px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowReturn" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="stepArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+    </marker>
+    <linearGradient id="userGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+    <linearGradient id="kernelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#334155"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="340" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="28" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold">Linux 32 位系统调用流程</text>
+
+  <!-- User Space -->
+  <rect x="25" y="44" width="750" height="120" rx="10" fill="url(#userGrad)" opacity="0.06"/>
+  <text x="55" y="64" fill="#6366f1" font-size="12" font-weight="bold">用户态 (User Mode)</text>
+
+  <!-- Steps in user space with arrows -->
+  <rect x="45" y="78" width="148" height="64" rx="8" fill="#fff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="119" y="100" text-anchor="middle" fill="#3730a3" font-size="11" font-weight="bold">步骤 1: 设置 EAX</text>
+  <text x="119" y="118" text-anchor="middle" fill="#64748b" font-size="9">系统调用号 → EAX</text>
+  <text x="119" y="132" text-anchor="middle" fill="#64748b" font-size="9">mov eax, 4</text>
+
+  <line x1="193" y1="110" x2="216" y2="110" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#stepArrow)"/>
+
+  <rect x="220" y="78" width="160" height="64" rx="8" fill="#fff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="300" y="100" text-anchor="middle" fill="#3730a3" font-size="11" font-weight="bold">步骤 2: 设置参数</text>
+  <text x="300" y="118" text-anchor="middle" fill="#64748b" font-size="9">EBX, ECX, EDX 等</text>
+  <text x="300" y="132" text-anchor="middle" fill="#64748b" font-size="9">按序放入寄存器</text>
+
+  <line x1="380" y1="110" x2="403" y2="110" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#stepArrow)"/>
+
+  <rect x="407" y="78" width="160" height="64" rx="8" fill="#fff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="487" y="100" text-anchor="middle" fill="#3730a3" font-size="11" font-weight="bold">步骤 3: 触发中断</text>
+  <text x="487" y="118" text-anchor="middle" fill="#64748b" font-size="9">执行 int 0x80</text>
+  <text x="487" y="132" text-anchor="middle" fill="#64748b" font-size="9">CPU 切换至内核态</text>
+
+  <line x1="567" y1="110" x2="590" y2="110" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#stepArrow)"/>
+
+  <rect x="594" y="78" width="155" height="64" rx="8" fill="#fff" stroke="#10b981" stroke-width="1.5"/>
+  <text x="671" y="100" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">步骤 5: 取返回值</text>
+  <text x="671" y="118" text-anchor="middle" fill="#64748b" font-size="9">结果在 EAX 中</text>
+  <text x="671" y="132" text-anchor="middle" fill="#64748b" font-size="9">负值 = 出错</text>
+
+  <!-- Transition down arrow -->
+  <line x1="487" y1="164" x2="487" y2="196" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="505" y="183" fill="#6366f1" font-size="9">int 0x80</text>
+
+  <!-- Return arrow -->
+  <line x1="280" y1="206" x2="280" y2="178" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrowReturn)"/>
+  <text x="260" y="194" fill="#10b981" font-size="9">返回</text>
+
+  <!-- Kernel Space -->
+  <rect x="25" y="204" width="750" height="120" rx="10" fill="url(#kernelGrad)" opacity="0.06"/>
+  <text x="55" y="224" fill="#334155" font-size="12" font-weight="bold">内核态 (Kernel Mode)</text>
+
+  <rect x="55" y="238" width="210" height="68" rx="8" fill="#1e293b"/>
+  <text x="160" y="260" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">步骤 4: 内核处理</text>
+  <text x="160" y="278" text-anchor="middle" fill="#94a3b8" font-size="9">1. 根据 EAX 查系统调用表</text>
+  <text x="160" y="294" text-anchor="middle" fill="#94a3b8" font-size="9">2. 执行对应的内核函数</text>
+
+  <rect x="290" y="238" width="220" height="68" rx="8" fill="#334155"/>
+  <text x="400" y="260" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">系统调用表</text>
+  <text x="400" y="278" text-anchor="middle" fill="#94a3b8" font-size="9">sys_call_table[EAX]</text>
+  <text x="400" y="294" text-anchor="middle" fill="#94a3b8" font-size="9">EAX=1→exit, EAX=4→write</text>
+
+  <rect x="535" y="238" width="215" height="68" rx="8" fill="#475569"/>
+  <text x="642" y="260" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">内核服务执行</text>
+  <text x="642" y="278" text-anchor="middle" fill="#94a3b8" font-size="9">执行 IO、内存分配等特权操作</text>
+  <text x="642" y="294" text-anchor="middle" fill="#94a3b8" font-size="9">结果写回 EAX，切换回用户态</text>
+</svg>

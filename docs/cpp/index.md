@@ -60,3 +60,7 @@ https://www.bilibili.com/video/BV1dr4y1n7vA/
 
 【浙江大学】C语言入门与进阶 翁恺（全129讲）
 https://www.bilibili.com/video/BV1XZ4y1S7e1
+
+
+现代 C++ 教程 高速上手 C++ 11/14/17/20第二版 欧长坤 著
+https://changkun.de/modern-cpp/

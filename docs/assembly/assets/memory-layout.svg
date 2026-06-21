@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 520" width="100%" height="auto" style="max-width:740px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <linearGradient id="kernelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#374151"/>
+      <stop offset="100%" style="stop-color:#4b5563"/>
+    </linearGradient>
+    <linearGradient id="stackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <linearGradient id="heapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="bssGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="dataGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="740" height="520" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="370" y="32" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">Linux 进程内存布局</text>
+
+  <!-- Left column: Addresses -->
+  <rect x="25" y="48" width="75" height="444" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="62" y="66" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">地址空间</text>
+
+  <text x="62" y="118" text-anchor="middle" fill="#64748b" font-size="8">高地址</text>
+  <text x="62" y="132" text-anchor="middle" fill="#94a3b8" font-size="7">0xFFFF..</text>
+  <line x1="35" y1="138" x2="90" y2="138" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <text x="62" y="188" text-anchor="middle" fill="#94a3b8" font-size="7">0xC000..</text>
+  <line x1="35" y1="194" x2="90" y2="194" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <text x="62" y="278" text-anchor="middle" fill="#94a3b8" font-size="8">&#8595; 栈向下</text>
+
+  <text x="62" y="366" text-anchor="middle" fill="#94a3b8" font-size="8">&#8593; 堆向上</text>
+
+  <line x1="35" y1="468" x2="90" y2="468" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <text x="62" y="482" text-anchor="middle" fill="#94a3b8" font-size="7">0x0804..</text>
+  <text x="62" y="496" text-anchor="middle" fill="#64748b" font-size="8">低地址</text>
+
+  <!-- Memory regions -->
+  <!-- Kernel -->
+  <rect x="115" y="60" width="590" height="44" rx="8" fill="url(#kernelGrad)" opacity="0.85"/>
+  <text x="410" y="80" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">内核空间 (Kernel Space)</text>
+  <text x="410" y="96" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">用户程序不可访问</text>
+
+  <!-- Stack -->
+  <rect x="115" y="146" width="590" height="52" rx="8" fill="url(#stackGrad)" opacity="0.9"/>
+  <text x="410" y="168" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">栈 (Stack)</text>
+  <text x="410" y="186" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">局部变量、返回地址、函数参数 — ESP 指向栈顶</text>
+
+  <!-- ESP indicator (now inside the box) -->
+  <rect x="670" y="150" width="30" height="14" rx="3" fill="#fff" opacity="0.9"/>
+  <text x="685" y="161" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="bold">ESP</text>
+
+  <!-- Memory Map -->
+  <rect x="115" y="200" width="590" height="38" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="410" y="224" text-anchor="middle" fill="#94a3b8" font-size="11">内存映射区域 (MMAP)</text>
+
+  <!-- Heap -->
+  <rect x="115" y="244" width="590" height="48" rx="8" fill="url(#heapGrad)" opacity="0.9"/>
+  <text x="410" y="265" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">堆 (Heap)</text>
+  <text x="410" y="283" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">动态分配内存 (malloc / brk) — 向上增长</text>
+
+  <!-- BSS -->
+  <rect x="115" y="298" width="590" height="44" rx="8" fill="url(#bssGrad)" opacity="0.85"/>
+  <text x="410" y="316" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">BSS 段 (.bss)</text>
+  <text x="410" y="334" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">未初始化全局变量 — 编译时不占文件体积</text>
+
+  <!-- Data -->
+  <rect x="115" y="348" width="590" height="44" rx="8" fill="url(#dataGrad)" opacity="0.85"/>
+  <text x="410" y="366" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">数据段 (.data)</text>
+  <text x="410" y="384" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">已初始化全局变量和静态变量 — 可读写</text>
+
+  <!-- Text -->
+  <rect x="115" y="398" width="590" height="44" rx="8" fill="url(#textGrad)" opacity="0.85"/>
+  <text x="410" y="416" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">代码段 (.text)</text>
+  <text x="410" y="434" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">程序机器指令 — 只读可执行</text>
+
+  <!-- Reserved -->
+  <rect x="115" y="450" width="590" height="36" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="410" y="473" text-anchor="middle" fill="#94a3b8" font-size="11">保留区域 (操作系统使用)</text>
+</svg>

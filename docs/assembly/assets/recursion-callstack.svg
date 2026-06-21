@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="auto" style="max-width:800px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <linearGradient id="call1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+    <linearGradient id="call2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="call3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ec4899"/>
+      <stop offset="100%" style="stop-color:#f472b6"/>
+    </linearGradient>
+    <linearGradient id="call4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#fb923c"/>
+    </linearGradient>
+    <linearGradient id="call5" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="450" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="28" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold">递归调用栈与返回 — factorial(5)</text>
+
+  <!-- Left: Call stack -->
+  <rect x="25" y="45" width="365" height="390" rx="10" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="207" y="68" text-anchor="middle" fill="#64748b" font-size="11" font-weight="bold">调用栈 (向下增长)</text>
+
+  <rect x="40" y="80" width="335" height="56" rx="6" fill="url(#call1)" opacity="0.92"/>
+  <text x="55" y="100" fill="#fff" font-size="12" font-weight="bold">factorial(5)</text>
+  <text x="55" y="118" fill="rgba(255,255,255,0.85)" font-size="10">n=5 | 等待 factorial(4) 返回</text>
+  <text x="340" y="130" text-anchor="end" fill="rgba(255,255,255,0.7)" font-size="9">第 1 次调用</text>
+
+  <rect x="40" y="140" width="335" height="56" rx="6" fill="url(#call2)" opacity="0.92"/>
+  <text x="55" y="160" fill="#fff" font-size="12" font-weight="bold">factorial(4)</text>
+  <text x="55" y="178" fill="rgba(255,255,255,0.85)" font-size="10">n=4 | 等待 factorial(3) 返回</text>
+  <text x="340" y="190" text-anchor="end" fill="rgba(255,255,255,0.7)" font-size="9">第 2 次调用</text>
+
+  <rect x="40" y="200" width="335" height="56" rx="6" fill="url(#call3)" opacity="0.92"/>
+  <text x="55" y="220" fill="#fff" font-size="12" font-weight="bold">factorial(3)</text>
+  <text x="55" y="238" fill="rgba(255,255,255,0.85)" font-size="10">n=3 | 等待 factorial(2) 返回</text>
+
+  <rect x="40" y="260" width="335" height="56" rx="6" fill="url(#call4)" opacity="0.92"/>
+  <text x="55" y="280" fill="#fff" font-size="12" font-weight="bold">factorial(2)</text>
+  <text x="55" y="298" fill="rgba(255,255,255,0.85)" font-size="10">n=2 | 等待 factorial(1) 返回</text>
+
+  <rect x="40" y="320" width="335" height="56" rx="6" fill="url(#call5)" opacity="0.92"/>
+  <text x="55" y="340" fill="#fff" font-size="12" font-weight="bold">factorial(1)</text>
+  <text x="55" y="358" fill="rgba(255,255,255,0.85)" font-size="10">n=1 | 终止条件: 返回 1</text>
+  <text x="340" y="370" text-anchor="end" fill="rgba(255,255,255,0.7)" font-size="9">基准条件</text>
+
+  <!-- RETURN arrows in the gap between columns -->
+  <line x1="400" y1="355" x2="400" y2="195" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="412" y="275" fill="#059669" font-size="9">逐层返回并计算</text>
+
+  <!-- Right: Computation chain -->
+  <rect x="430" y="45" width="350" height="390" rx="10" fill="#f0fdf4" stroke="#10b981" stroke-width="1"/>
+  <text x="605" y="68" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">返回并计算</text>
+
+  <!-- Up arrows -->
+  <text x="455" y="108" fill="#10b981" font-size="18">↑</text>
+  <text x="455" y="170" fill="#10b981" font-size="18">↑</text>
+  <text x="455" y="230" fill="#10b981" font-size="18">↑</text>
+  <text x="455" y="290" fill="#10b981" font-size="18">↑</text>
+
+  <rect x="480" y="86" width="270" height="42" rx="6" fill="#fff" stroke="#10b981" stroke-width="1"/>
+  <text x="495" y="104" fill="#059669" font-size="11" font-family="monospace">factorial(1) 返回 1</text>
+  <text x="495" y="120" fill="#64748b" font-size="10">基准条件：n &lt;= 1 时返回 1</text>
+
+  <rect x="480" y="148" width="270" height="42" rx="6" fill="#fff" stroke="#10b981" stroke-width="1"/>
+  <text x="495" y="166" fill="#059669" font-size="11" font-family="monospace">2 × 1 = 2</text>
+  <text x="495" y="182" fill="#64748b" font-size="10">factorial(2) = 2 × factorial(1)</text>
+
+  <rect x="480" y="210" width="270" height="42" rx="6" fill="#fff" stroke="#10b981" stroke-width="1"/>
+  <text x="495" y="228" fill="#059669" font-size="11" font-family="monospace">3 × 2 = 6</text>
+  <text x="495" y="244" fill="#64748b" font-size="10">factorial(3) = 3 × factorial(2)</text>
+
+  <rect x="480" y="272" width="270" height="42" rx="6" fill="#fff" stroke="#10b981" stroke-width="1"/>
+  <text x="495" y="290" fill="#059669" font-size="11" font-family="monospace">4 × 6 = 24</text>
+  <text x="495" y="306" fill="#64748b" font-size="10">factorial(4) = 4 × factorial(3)</text>
+
+  <rect x="480" y="334" width="270" height="50" rx="8" fill="url(#call5)" opacity="0.95"/>
+  <text x="615" y="356" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">5 × 24 = 120</text>
+  <text x="615" y="374" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">factorial(5) 最终结果</text>
+</svg>

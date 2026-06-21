@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="100%" height="auto" style="max-width:800px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <marker id="addrArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+    </marker>
+    <marker id="addrArrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366f1"/>
+    </marker>
+    <linearGradient id="highGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="asmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="320" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="28" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold">高级语言 vs 汇编语言：从代码到执行</text>
+
+  <!-- High-level path -->
+  <rect x="25" y="48" width="360" height="252" rx="12" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+  <text x="205" y="73" text-anchor="middle" fill="#059669" font-size="13" font-weight="bold">高级语言 (Python/C/Java)</text>
+
+  <rect x="45" y="88" width="320" height="44" rx="8" fill="url(#highGrad)" opacity="0.9"/>
+  <text x="205" y="106" text-anchor="middle" fill="#fff" font-size="11" font-family="monospace">int result = a + b + c;</text>
+  <text x="205" y="123" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">一行代码完成加法</text>
+
+  <line x1="205" y1="136" x2="205" y2="154" stroke="#10b981" stroke-width="2" marker-end="url(#addrArrow)"/>
+  <text x="218" y="148" fill="#059669" font-size="9">编译器优化</text>
+
+  <rect x="45" y="158" width="320" height="44" rx="8" fill="url(#highGrad)" opacity="0.7"/>
+  <text x="205" y="176" text-anchor="middle" fill="#fff" font-size="11">编译器自动生成多条机器指令</text>
+  <text x="205" y="193" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">自动完成寄存器分配与优化</text>
+
+  <line x1="205" y1="206" x2="205" y2="222" stroke="#10b981" stroke-width="2" marker-end="url(#addrArrow)"/>
+
+  <rect x="45" y="226" width="320" height="56" rx="8" fill="url(#highGrad)" opacity="0.5"/>
+  <text x="205" y="248" text-anchor="middle" fill="#fff" font-size="12">可执行文件（机器码）</text>
+  <text x="205" y="266" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">CPU 直接执行 · 一处编写多处运行</text>
+
+  <!-- Assembly path -->
+  <rect x="415" y="48" width="360" height="252" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="595" y="73" text-anchor="middle" fill="#4338ca" font-size="13" font-weight="bold">汇编语言 (NASM x86)</text>
+
+  <rect x="435" y="88" width="320" height="44" rx="8" fill="url(#asmGrad)" opacity="0.9"/>
+  <text x="595" y="106" text-anchor="middle" fill="#fff" font-size="10" font-family="monospace">mov eax, [a]</text>
+  <text x="595" y="123" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">手动加载每一个变量到寄存器</text>
+
+  <rect x="435" y="138" width="320" height="44" rx="8" fill="url(#asmGrad)" opacity="0.9"/>
+  <text x="595" y="156" text-anchor="middle" fill="#fff" font-size="10" font-family="monospace">add eax, [b]   |   add eax, [c]</text>
+  <text x="595" y="173" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">逐条执行加法指令</text>
+
+  <line x1="595" y1="186" x2="595" y2="202" stroke="#6366f1" stroke-width="2" marker-end="url(#addrArrow2)"/>
+  <text x="608" y="197" fill="#4338ca" font-size="9">NASM 汇编器</text>
+
+  <rect x="435" y="206" width="320" height="44" rx="8" fill="url(#asmGrad)" opacity="0.7"/>
+  <text x="595" y="224" text-anchor="middle" fill="#fff" font-size="10" font-family="monospace">mov [result], eax</text>
+  <text x="595" y="241" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">手动存储计算结果到内存</text>
+
+  <line x1="595" y1="254" x2="595" y2="268" stroke="#6366f1" stroke-width="2" marker-end="url(#addrArrow2)"/>
+
+  <rect x="435" y="272" width="320" height="22" rx="6" fill="url(#asmGrad)" opacity="0.5"/>
+  <text x="595" y="287" text-anchor="middle" fill="#fff" font-size="10">目标文件 (.o) → 链接 → 可执行文件</text>
+</svg>

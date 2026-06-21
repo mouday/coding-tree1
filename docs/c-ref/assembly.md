@@ -123,7 +123,7 @@ ld -m elf_i386 hello.o -o hello            # 链接成可执行文件
 
 ## 5. 实践：写一个求和函数
 
-```shell
+```asm
 section .text
 global _start
 
@@ -141,6 +141,7 @@ sum_func:
     add eax, ebx            ; EAX = EAX + EBX
     ret                     ; 返回，EAX就是返回值
 ```
+
 运行后 `echo $?` 会输出 30。
 
 ## 6. 调试工具：观察寄存器

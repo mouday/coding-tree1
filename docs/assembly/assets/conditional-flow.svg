@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" width="100%" height="auto" style="max-width:820px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <marker id="cArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366f1"/>
+    </marker>
+    <linearGradient id="ifGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="820" height="360" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="410" y="28" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold">条件判断流程：IF-ELSE IF-ELSE 多分支结构</text>
+
+  <!-- Start -->
+  <rect x="340" y="48" width="140" height="36" rx="18" fill="#1e293b"/>
+  <text x="410" y="72" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">加载分数 → EAX</text>
+
+  <line x1="410" y1="84" x2="410" y2="102" stroke="#6366f1" stroke-width="2" marker-end="url(#cArrow)"/>
+
+  <!-- Diamond 1: >= 90 -->
+  <polygon points="410,105 515,132 410,159 305,132" fill="url(#ifGrad)" opacity="0.92"/>
+  <text x="410" y="136" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">EAX &gt;= 90 ?</text>
+
+  <!-- Yes: A -->
+  <line x1="515" y1="132" x2="585" y2="132" stroke="#10b981" stroke-width="2" marker-end="url(#cArrow)"/>
+  <text x="550" y="125" text-anchor="middle" fill="#10b981" font-size="10" font-weight="bold">Y</text>
+  <rect x="590" y="110" width="85" height="44" rx="8" fill="#10b981" opacity="0.92"/>
+  <text x="632" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">grade = A</text>
+
+  <!-- No: go to next -->
+  <line x1="410" y1="159" x2="410" y2="179" stroke="#ef4444" stroke-width="2" marker-end="url(#cArrow)"/>
+  <text x="422" y="173" fill="#ef4444" font-size="10" font-weight="bold">N</text>
+
+  <!-- Diamond 2: >= 80 -->
+  <polygon points="410,182 515,209 410,236 305,209" fill="url(#ifGrad)" opacity="0.85"/>
+  <text x="410" y="213" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">EAX &gt;= 80 ?</text>
+
+  <line x1="515" y1="209" x2="585" y2="209" stroke="#10b981" stroke-width="2" marker-end="url(#cArrow)"/>
+  <text x="550" y="202" text-anchor="middle" fill="#10b981" font-size="10" font-weight="bold">Y</text>
+  <rect x="590" y="187" width="85" height="44" rx="8" fill="#10b981" opacity="0.85"/>
+  <text x="632" y="215" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">grade = B</text>
+
+  <line x1="410" y1="236" x2="410" y2="256" stroke="#ef4444" stroke-width="2" marker-end="url(#cArrow)"/>
+  <text x="422" y="250" fill="#ef4444" font-size="10" font-weight="bold">N</text>
+
+  <!-- Diamond 3: >= 70 -->
+  <polygon points="410,259 515,286 410,313 305,286" fill="url(#ifGrad)" opacity="0.78"/>
+  <text x="410" y="290" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">EAX &gt;= 70 ?</text>
+
+  <line x1="515" y1="286" x2="585" y2="286" stroke="#10b981" stroke-width="2" marker-end="url(#cArrow)"/>
+  <text x="550" y="279" text-anchor="middle" fill="#10b981" font-size="10" font-weight="bold">Y</text>
+  <rect x="590" y="264" width="85" height="44" rx="8" fill="#10b981" opacity="0.78"/>
+  <text x="632" y="292" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">grade = C</text>
+
+  <!-- Continue down -->
+  <line x1="410" y1="313" x2="410" y2="330" stroke="#6366f1" stroke-width="2" marker-end="url(#cArrow)"/>
+
+  <!-- Remaining branches -->
+  <rect x="310" y="333" width="200" height="22" rx="5" fill="#e2e8f0"/>
+  <text x="410" y="348" text-anchor="middle" fill="#64748b" font-size="10">继续: &gt;=60→D, 否则→F</text>
+
+  <!-- Right side: code mapping -->
+  <rect x="695" y="48" width="110" height="152" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="750" y="66" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="bold">对应指令</text>
+  <text x="705" y="85" fill="#64748b" font-size="9" font-family="monospace">cmp eax, 90</text>
+  <text x="705" y="100" fill="#64748b" font-size="9" font-family="monospace">jl check_80</text>
+  <line x1="702" y1="106" x2="798" y2="106" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="705" y="120" fill="#64748b" font-size="9" font-family="monospace">cmp eax, 80</text>
+  <text x="705" y="135" fill="#64748b" font-size="9" font-family="monospace">jl check_70</text>
+  <line x1="702" y1="141" x2="798" y2="141" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="705" y="155" fill="#64748b" font-size="9" font-family="monospace">cmp eax, 70</text>
+  <text x="705" y="170" fill="#64748b" font-size="9" font-family="monospace">jl check_60</text>
+  <line x1="702" y1="176" x2="798" y2="176" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="705" y="190" fill="#64748b" font-size="9" font-family="monospace">...</text>
+</svg>

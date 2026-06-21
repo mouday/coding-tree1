@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" width="100%" height="auto" style="max-width:720px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <linearGradient id="paramBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+    <linearGradient id="retBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="ebpBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="localBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="720" height="440" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="360" y="28" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold">栈帧结构 (Stack Frame) — cdecl 调用约定</text>
+
+  <!-- Main stack visualization -->
+  <rect x="35" y="48" width="480" height="350" rx="10" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- High address -->
+  <text x="28" y="78" fill="#64748b" font-size="9" font-weight="bold">高地址</text>
+  <line x1="28" y1="83" x2="35" y2="83" stroke="#64748b" stroke-width="1"/>
+
+  <!-- Caller's data -->
+  <rect x="50" y="66" width="448" height="40" rx="6" fill="#cbd5e1" opacity="0.5"/>
+  <text x="274" y="91" text-anchor="middle" fill="#64748b" font-size="10">调用者的栈帧数据 ...</text>
+
+  <!-- Parameter N -->
+  <rect x="50" y="112" width="448" height="30" rx="5" fill="url(#paramBar)" opacity="0.88"/>
+  <text x="66" y="132" fill="#fff" font-size="10" font-weight="bold">参数 N</text>
+  <text x="470" y="132" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">最后压入</text>
+
+  <!-- Parameter 2 -->
+  <rect x="50" y="146" width="448" height="30" rx="5" fill="url(#paramBar)" opacity="0.83"/>
+  <text x="66" y="166" fill="#fff" font-size="10" font-weight="bold">参数 2</text>
+  <text x="470" y="166" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp + 12]</text>
+
+  <!-- Parameter 1 -->
+  <rect x="50" y="180" width="448" height="30" rx="5" fill="url(#paramBar)" opacity="0.78"/>
+  <text x="66" y="200" fill="#fff" font-size="10" font-weight="bold">参数 1</text>
+  <text x="470" y="200" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp + 8]</text>
+
+  <!-- Return Address -->
+  <rect x="50" y="214" width="448" height="30" rx="5" fill="url(#retBar)" opacity="0.9"/>
+  <text x="66" y="234" fill="#fff" font-size="10" font-weight="bold">返回地址</text>
+  <text x="470" y="234" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp + 4] — CALL 压入</text>
+
+  <!-- Old EBP -->
+  <rect x="50" y="248" width="448" height="30" rx="5" fill="url(#ebpBar)" opacity="0.92"/>
+  <text x="66" y="268" fill="#fff" font-size="10" font-weight="bold">旧的 EBP</text>
+  <text x="470" y="268" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp] — push ebp</text>
+
+  <!-- EBP indicator -->
+  <line x1="505" y1="263" x2="530" y2="263" stroke="#10b981" stroke-width="2"/>
+  <text x="555" y="267" fill="#10b981" font-size="10" font-weight="bold">← EBP</text>
+
+  <!-- Local var 1 -->
+  <rect x="50" y="284" width="448" height="30" rx="5" fill="url(#localBar)" opacity="0.78"/>
+  <text x="66" y="304" fill="#fff" font-size="10" font-weight="bold">局部变量 1</text>
+  <text x="470" y="304" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp - 4]</text>
+
+  <!-- Local var 2 -->
+  <rect x="50" y="318" width="448" height="30" rx="5" fill="url(#localBar)" opacity="0.72"/>
+  <text x="66" y="338" fill="#fff" font-size="10" font-weight="bold">局部变量 2</text>
+  <text x="470" y="338" text-anchor="end" fill="rgba(255,255,255,0.8)" font-size="9">[ebp - 8]</text>
+
+  <!-- ESP indicator -->
+  <line x1="505" y1="333" x2="530" y2="333" stroke="#ef4444" stroke-width="2"/>
+  <text x="555" y="337" fill="#ef4444" font-size="10" font-weight="bold">← ESP</text>
+
+  <!-- More locals -->
+  <rect x="50" y="352" width="448" height="34" rx="5" fill="#cbd5e1" opacity="0.35" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="274" y="374" text-anchor="middle" fill="#94a3b8" font-size="10">更多局部变量 ...</text>
+
+  <!-- Low address -->
+  <text x="28" y="403" fill="#64748b" font-size="9" font-weight="bold">低地址</text>
+
+  <!-- Right side: Legend + Template -->
+  <rect x="540" y="48" width="160" height="175" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="620" y="70" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">颜色图例</text>
+
+  <rect x="552" y="82" width="20" height="12" rx="3" fill="url(#paramBar)" opacity="0.85"/>
+  <text x="580" y="93" fill="#334155" font-size="9">函数参数</text>
+  <rect x="552" y="102" width="20" height="12" rx="3" fill="url(#retBar)" opacity="0.9"/>
+  <text x="580" y="113" fill="#334155" font-size="9">返回地址</text>
+  <rect x="552" y="122" width="20" height="12" rx="3" fill="url(#ebpBar)" opacity="0.92"/>
+  <text x="580" y="133" fill="#334155" font-size="9">保存的 EBP</text>
+  <rect x="552" y="142" width="20" height="12" rx="3" fill="url(#localBar)" opacity="0.78"/>
+  <text x="580" y="153" fill="#334155" font-size="9">局部变量</text>
+
+  <rect x="540" y="240" width="160" height="138" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1"/>
+  <text x="620" y="262" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">标准模板</text>
+  <text x="555" y="283" fill="#334155" font-size="9" font-weight="bold">序言 (Prologue):</text>
+  <text x="555" y="300" fill="#334155" font-size="9" font-family="monospace">push ebp</text>
+  <text x="555" y="317" fill="#334155" font-size="9" font-family="monospace">mov ebp, esp</text>
+  <text x="555" y="340" fill="#334155" font-size="9" font-weight="bold">尾声 (Epilogue):</text>
+  <text x="555" y="357" fill="#334155" font-size="9" font-family="monospace">mov esp, ebp</text>
+  <text x="555" y="374" fill="#334155" font-size="9" font-family="monospace">pop ebp</text>
+</svg>

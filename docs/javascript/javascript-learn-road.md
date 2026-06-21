@@ -153,7 +153,7 @@
 ## 六、React.js
 1. React.js 核心技术
     - [React.js](https://react.docschina.org/)
-        - [《尚硅谷 React 教程》笔记](/blog/react/atguigu-react)
+        <!-- - [《尚硅谷 React 教程》笔记](/blog/react/atguigu-react) -->
     - JSX
     - 组件及组件通讯
     - 虚拟 DOM

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 165" width="100%" height="auto" style="max-width:840px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4A90D9"/>
+    </marker>
+    <linearGradient id="boxGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="boxGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb"/>
+      <stop offset="100%" style="stop-color:#f5576c"/>
+    </linearGradient>
+    <linearGradient id="boxGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+    <linearGradient id="boxGrad4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b"/>
+      <stop offset="100%" style="stop-color:#38f9d7"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="840" height="165" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Step 1 -->
+  <rect x="25" y="30" width="160" height="62" rx="12" fill="url(#boxGrad1)" opacity="0.95"/>
+  <text x="105" y="56" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">hello.asm</text>
+  <text x="105" y="76" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11">汇编源文件</text>
+
+  <!-- Arrow 1 -->
+  <line x1="185" y1="61" x2="238" y2="61" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="211" y="50" text-anchor="middle" fill="#666" font-size="9">nasm -f elf32</text>
+
+  <!-- Step 2 -->
+  <rect x="248" y="30" width="160" height="62" rx="12" fill="url(#boxGrad2)" opacity="0.95"/>
+  <text x="328" y="56" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">hello.o</text>
+  <text x="328" y="76" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11">目标文件</text>
+
+  <!-- Arrow 2 -->
+  <line x1="408" y1="61" x2="456" y2="61" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="432" y="50" text-anchor="middle" fill="#666" font-size="9">ld</text>
+
+  <!-- Step 3 -->
+  <rect x="466" y="30" width="160" height="62" rx="12" fill="url(#boxGrad3)" opacity="0.95"/>
+  <text x="546" y="56" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">hello</text>
+  <text x="546" y="76" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11">可执行文件</text>
+
+  <!-- Arrow 3 -->
+  <line x1="626" y1="61" x2="674" y2="61" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="650" y="50" text-anchor="middle" fill="#666" font-size="9">./hello</text>
+
+  <!-- Step 4 -->
+  <rect x="684" y="30" width="130" height="62" rx="12" fill="url(#boxGrad4)" opacity="0.95"/>
+  <text x="749" y="61" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">运行输出</text>
+
+  <!-- Bottom labels -->
+  <text x="105" y="115" text-anchor="middle" fill="#888" font-size="10">1. 编写源代码</text>
+  <text x="211" y="130" text-anchor="middle" fill="#999" font-size="9">汇编</text>
+  <text x="328" y="115" text-anchor="middle" fill="#888" font-size="10">2. 汇编 (NASM)</text>
+  <text x="432" y="130" text-anchor="middle" fill="#999" font-size="9">链接</text>
+  <text x="546" y="115" text-anchor="middle" fill="#888" font-size="10">3. 链接 (LD/GCC)</text>
+  <text x="650" y="130" text-anchor="middle" fill="#999" font-size="9">运行</text>
+  <text x="749" y="115" text-anchor="middle" fill="#888" font-size="10">4. 执行程序</text>
+
+  <!-- Divider -->
+  <line x1="25" y1="145" x2="815" y2="145" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="420" y="158" text-anchor="middle" fill="#aaa" font-size="9">源文件 → 汇编器 → 目标文件 → 链接器 → 可执行文件 → 运行</text>
+</svg>

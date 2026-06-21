@@ -4,6 +4,8 @@
 
 [shell](./shell/index.md)
 
+[汇编语言](./assembly/index.md)
+
 ## 工具软件
 
 [etcd](./etcd/index.md)
