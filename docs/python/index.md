@@ -1,25 +1,5 @@
 # Python
 
-## 语言基础
-
-[Python 2.7.18 文档 » 标准库](https://docs.python.org/zh-cn/2/library/index.html)
-
-[老男孩 银角大王 - 武沛齐(博客园)](https://www.cnblogs.com/wupeiqi/)
-
-[视频] [老男孩 Bilibili](https://space.bilibili.com/283478842/video)
-
-[老男孩 教学文档、视频等相关资源](https://pythonav.com/)
-
-[Python 最佳实践指南！](https://pythonguidecn.readthedocs.io/zh/latest/index.html)
-
-## 自然语言处理
-
-[教程 | 理解和实现自然语言处理终极指南（附 Python 代码）](https://blog.csdn.net/starzhou/article/details/70605417)
-
-[用 Python 做自然语言处理必知的八个工具](https://mp.weixin.qq.com/s/UUgXV20ojMnd77aMQgiFPw)
-
-[推荐系统 RecommenderSystems](https://github.com/apachecn/RecommenderSystems): 推荐系统基本知识，相关算法以及实现
-
 ## 第三方库
 
 | 库名 | 简介 | 地址|
@@ -41,6 +21,9 @@ six | Python2/3兼容 | [doc](https://six.readthedocs.io/)
 virtualenvwrapper | 虚拟环境 | [doc](https://virtualenvwrapper.readthedocs.io/)
 supervisord | 进程管理 | [doc](http://www.supervisord.org/index.html)
 flask | 轻量级 Web 应用框架 |  [doc](https://flask.palletsprojects.com/)
+html2text | html转markdown | [github](https://github.com/Alir3z4/html2text)、[pypi](https://pypi.org/project/html2text)
+html-to-markdown | html转markdown | [github](https://github.com/kreuzberg-dev/html-to-markdown)
+
 
 - [flask-paginate](https://pythonhosted.org/Flask-paginate/)  is a simple paginate extension for flask which is reference to will_paginate, and use bootstrap as css framework.
 
@@ -142,3 +125,24 @@ flask | 轻量级 Web 应用框架 |  [doc](https://flask.palletsprojects.com/)
 [吐血推荐珍藏的Flask资源](https://blog.csdn.net/zV3e189oS5c0tSknrBCL/article/details/82112854)
 
 [Flask补充系列–将应用部署在Heroku上](http://www.bjhee.com/flask-heroku.html)
+
+
+## 语言基础
+
+[Python 2.7.18 文档 » 标准库](https://docs.python.org/zh-cn/2/library/index.html)
+
+[老男孩 银角大王 - 武沛齐(博客园)](https://www.cnblogs.com/wupeiqi/)
+
+[视频] [老男孩 Bilibili](https://space.bilibili.com/283478842/video)
+
+[老男孩 教学文档、视频等相关资源](https://pythonav.com/)
+
+[Python 最佳实践指南！](https://pythonguidecn.readthedocs.io/zh/latest/index.html)
+
+## 自然语言处理
+
+[教程 | 理解和实现自然语言处理终极指南（附 Python 代码）](https://blog.csdn.net/starzhou/article/details/70605417)
+
+[用 Python 做自然语言处理必知的八个工具](https://mp.weixin.qq.com/s/UUgXV20ojMnd77aMQgiFPw)
+
+[推荐系统 RecommenderSystems](https://github.com/apachecn/RecommenderSystems): 推荐系统基本知识，相关算法以及实现

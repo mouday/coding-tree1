@@ -434,6 +434,74 @@ int main(int argc, char **argv)
 }
 ```
 
+## 汇编
+
+```shell
+# 查看汇编
+disassemble / disas
+
+# 指定函数
+disas main
+
+# 显示源码
+disas /m main
+
+# 显示原始机器码
+disas /r main
+
+# TUI模式
+layout asm
+stepi/ nexti
+
+# 分屏显示
+layout split
+
+# 寄存器窗口
+layout regs
+
+# 切换窗口焦点
+focus cmd
+focus asm
+
+# 显示寄存器
+info registers
+
+# 显示单个寄存器
+info registers eax
+
+# 以16进制打印4个字节
+x/x $rsp+0x34
+
+# 以16进制打印8个字节
+x/gx $rsp+0x34
+
+# 字符串
+x/s $rsp+0x34
+
+# 打印地址值16进制
+p /x ($rsp+0x34)
+
+# 打印int
+p *(int*)($rsp+0x34)
+
+# 打印字符串
+p (char*)($rsp+0x34)
+
+# 输出到文件
+set logging on
+disas /m main
+set logging off
+
+# 查看汇编代码风格
+show disassembly-flavor
+
+# Intel风格
+set disassembly-flavor intel
+
+# AT&T风格
+set disassembly-flavor att
+```
+
 ## 日志调试
 
 不方便调试，可以直接输出日志查看
