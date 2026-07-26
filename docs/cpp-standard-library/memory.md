@@ -6,9 +6,9 @@
 
 智能指针是 `<memory>` 头文件中的核心内容。它们是 C++11 引入的特性，用于自动管理动态分配的内存。智能指针的主要类型有：
 
-- std::unique_ptr：独占所有权的智能指针，同一时间只能有一个 unique_ptr 指向特定内存。
-- std::shared_ptr：共享所有权的智能指针，多个 shared_ptr 可以指向同一内存，内存在最后一个 shared_ptr 被销毁时释放。
-- std::weak_ptr：弱引用智能指针，用于与 shared_ptr 配合使用，避免循环引用导致的内存泄漏。
+- `std::unique_ptr`：独占所有权的智能指针，同一时间只能有一个 unique_ptr 指向特定内存。
+- `std::shared_ptr`：共享所有权的智能指针，多个 shared_ptr 可以指向同一内存，内存在最后一个 shared_ptr 被销毁时释放。
+- `std::weak_ptr`：弱引用智能指针，用于与 shared_ptr 配合使用，避免循环引用导致的内存泄漏。
 
 ## std::unique_ptr
 
@@ -54,6 +54,12 @@ int main(int argc, char const *argv[])
 Foo
 show
 ~Foo
+```
+
+`c++14`
+
+```cpp
+std::unique_ptr<Data> data = std::make_unique<Data>();
 ```
 
 ## std::shared_ptr
@@ -105,6 +111,13 @@ show
 ~Foo
 ```
 
+`c++14`
+
+```cpp
+std::shared_ptr<Data> data1 = std::make_shared<Data>();
+std::shared_ptr<Data> data2 = data1;
+```
+
 ## std::weak_ptr
 
 解决循环引用问题
@@ -148,6 +161,45 @@ Node
 Node
 ~Node
 ~Node
+```
+
+示例2: 相互引用
+
+```cpp
+#include <iostream>
+#include <memory>
+
+class Data
+{
+public:
+    Data()
+    {
+        std::cout << "Data" << std::endl;
+    }
+    ~Data()
+    {
+        std::cout << "~Data" << std::endl;
+    }
+    std::weak_ptr<Data> data;
+};
+
+int main(int argc, char const *argv[])
+{
+    std::shared_ptr<Data> data1 = std::make_shared<Data>();
+    std::shared_ptr<Data> data2 = std::make_shared<Data>();
+    data1->data = data1;
+    data2->data = data2;
+    return 0;
+}
+```
+
+输出
+
+```shell
+Data
+Data
+~Data
+~Data
 ```
 
 ## std::addressof
