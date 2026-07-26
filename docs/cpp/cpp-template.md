@@ -27,9 +27,9 @@ C++之所以变成一门层次丰富、结构多变、语法繁冗的语言，�
 
 因为本文并不是用于C++入门，例子中也多少会牵涉一些其它知识，因此如果读者能够具备以下条件，会读起来更加轻松：
 
-* 熟悉C++的基本语法；
-* 使用过STL；
-* 熟悉一些常用的算法，以及递归等程序设计方法。
+- 熟悉C++的基本语法；
+- 使用过STL；
+- 熟悉一些常用的算法，以及递归等程序设计方法。
 
 此外，尽管第一章会介绍一些Template的基本语法，但是还是会略显单薄。因此也希望读者能对C++ Template最基本语法形式有所了解和掌握；如果会编写基本的函数模板和类模板那就更好了。
 
@@ -45,15 +45,15 @@ C++之所以变成一门层次丰富、结构多变、语法繁冗的语言，�
 
 C++编译器众多，且对模板的支持可能存在细微差别。如果没有特别强调，本书行文过程中，使用了下列编译器来测试文中提供的代码和示例：
 
-* Clang 14.0.3; 15.0 (amd64)
-* Visual Studio 2022 19.2+ (amd64)
+- Clang 14.0.3; 15.0 (amd64)
+- Visual Studio 2022 19.2+ (amd64)
 
 此外，部分复杂实例我们还在文中提供了在线的编译器预览以方便大家阅读和测试。在线编译器参见： [`gcc.godbolt.org`](https://gcc.godbolt.org/)。
 
 一些示例中用到的特性所对应的C++标准：
 
-|特性|标准|
-|---|---|
+| 特性              | 标准   |
+| ----------------- | ------ |
 | `std::decay_t<T>` | C++ 14 |
 
 ## 1.5. 体例
@@ -79,16 +79,16 @@ void SampleCode() {
 
 ## 1.6. 意见、建议、喷、补遗、写作计划
 
-* 需增加：
-  * 模板的使用动机。
-  * 增加“如何使用本文”一节。本节将说明全书的体例（强调字体、提示语、例子的组织），所有的描述、举例、引用在重审时将按照体例要求重新组织。
-  * 除了用于描述语法的例子外，其他例子将尽量赋予实际意义，以方便阐述意图。
-  * 在合适的章节完整叙述模板的类型推导规则。Parameter-Argument, auto variable, decltype, decltype(auto)
-  * 在函数模板重载和实例化的部分讲述ADL。
-  * 变参模板处应当按照标准（Argument Packing/Unpacking）来讲解。
-* 建议：
-  * 比较模板和函数的差异性
-  * 蓝色：C++14 Return type deduction for normal functions 的分析
+- 需增加：
+  - 模板的使用动机。
+  - 增加“如何使用本文”一节。本节将说明全书的体例（强调字体、提示语、例子的组织），所有的描述、举例、引用在重审时将按照体例要求重新组织。
+  - 除了用于描述语法的例子外，其他例子将尽量赋予实际意义，以方便阐述意图。
+  - 在合适的章节完整叙述模板的类型推导规则。Parameter-Argument, auto variable, decltype, decltype(auto)
+  - 在函数模板重载和实例化的部分讲述ADL。
+  - 变参模板处应当按照标准（Argument Packing/Unpacking）来讲解。
+- 建议：
+  - 比较模板和函数的差异性
+  - 蓝色：C++14 Return type deduction for normal functions 的分析
 
 # 2. Template的基本语法
 
@@ -99,14 +99,17 @@ void SampleCode() {
 ### 2.2.1. “模板类”还是“类模板”
 
 ### 2.2.2. Class Template的与成员变量定义
+
 我们来回顾一下最基本的Class Template声明和定义形式：
 
 Class Template声明：
+
 ```C++
 template <typename T> class ClassA;
 ```
 
 Class Template定义：
+
 ```C++
 template <typename T> class ClassA
 {
@@ -116,7 +119,7 @@ template <typename T> class ClassA
 
 `template` 是C++关键字，意味着我们接下来将定义一个模板。和函数一样，模板也有一系列参数。这些参数都被囊括在template之后的`< >`中。在上文的例子中， `typename T`便是模板参数。回顾一下与之相似的函数参数的声明形式：
 
-``` C++
+```C++
 void foo(int a);
 ```
 
@@ -126,7 +129,7 @@ void foo(int a);
 
 例如我们用`ClassA<int>`来实例化类模板ClassA，那么`ClassA<int>`可以等同于以下的定义：
 
-``` C++
+```C++
 // 注意：这并不是有效的C++语法，只是为了说明模板的作用
 typedef class {
     int member;
@@ -145,8 +148,8 @@ class vector
 {
 public:
     void push_back(T const&);
-    void clear();				
-	
+    void clear();
+
 private:
     T* elements;
 };
@@ -166,20 +169,26 @@ intArray.push_back(5);
 floatArray.push_back(3.0f);
 ```
 
-变量定义的过程可以分成两步来看：第一步，`vector<int>`将`int`绑定到类模板`vector`上，获得了一个“普通的类`vector<int>`”；第二步通过`vector<int>`定义了一个变量。
+变量定义的过程可以分成两步来看：
+
+- 第一步，`vector<int>`将`int`绑定到类模板`vector`上，获得了一个“普通的类`vector<int>`”；
+
+- 第二步通过`vector<int>`定义了一个变量。
+
 与“普通的类”不同，类模板是不能直接用来定义变量的 —— 毕竟它的名字是“模板”而不是“类”。例如：
 
 ```C++
 vector unknownVector; // 错误示例
 ```
 
-这样就是错误的。我们把通过类型绑定将类模板变成“普通的类”的过程，称之为模板实例化（Template Instantiate）。实例化的语法是：
- 
+这样就是错误的。我们把通过类型绑定将类模板变成“普通的类”的过程，称之为`模板实例化`（Template Instantiate）。实例化的语法是：
+
 ```
 模板名 < [模板实参1，模板实参2，...] >
 ```
 
 看几个例子：
+
 ```C++
 vector<int>
 ClassA<double>
@@ -194,13 +203,13 @@ ClassB<int, float>
 
 当然，在实例化过程中，被绑定到模板参数上的类型（即模板实参）需要与模板形参正确匹配。
 就如同函数一样，如果没有提供足够并匹配的参数，模板便不能正确的实例化。
- 
+
 ### 2.2.4. 类模板的成员函数定义
 
 由于C++11正式废弃“模板导出”这一特性，因此在类模板的变量在调用成员函数的时候，需要看到完整的成员函数定义。因此现在的类模板中的成员函数，通常都是以内联的方式实现。
 例如：
 
-``` C++
+```C++
 template <typename T>
 class vector
 {
@@ -209,7 +218,7 @@ public:
     {
         // Function body
     }
-	
+
 private:
     T* elements;
 };
@@ -236,7 +245,7 @@ void vector<T>::clear()  // 函数的实现放在这里
 
 函数的实现部分看起来略微拗口。我第一次学到的时候，觉得
 
-``` C++
+```C++
 void vector::clear()
 {
     // Function body
@@ -250,12 +259,74 @@ void vector::clear()
 
 综上，正确的成员函数实现如下所示：
 
-``` C++
+```C++
 template <typename T> // 模板参数
 void vector<T> /*看起来像偏特化*/ ::clear() // 函数的实现放在这里
 {
     // Function body
 }
+```
+
+### 2.2.5. 完整示例
+
+```shell
+main.cpp
+template.h
+```
+
+template.h
+
+```cpp
+
+#pragma once
+#include <iostream>
+
+template <typename T>
+class Vector
+{
+public:
+    void push_back(T const& value);
+    void clear();
+
+private:
+    T list[];
+};
+
+template <typename T>
+void Vector<T>::clear()
+{
+    std::cout << "clear" << std::endl;
+}
+
+template <typename T>
+void Vector<T>::push_back(T const& value)
+{
+    std::cout << "push_back: " << value << std::endl;
+}
+```
+
+main.cpp
+
+```cpp
+#include <iostream>
+#include "template.h"
+
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+    Vector<int> vector;
+    vector.clear();
+    return 0;
+}
+```
+
+运行结果
+
+```shell
+g++ main.cpp  -o main && ./main
+
+clear
 ```
 
 ## 2.3. 函数模板 (Function Template) 入门
@@ -282,19 +353,19 @@ template <typename T> void foo()
 
 归根结底，模板无外乎两点：
 
-   1. 函数或者类里面，有一些类型我们希望它能变化一下，我们用标识符来代替它，这就是“模板参数”；
+1. 函数或者类里面，有一些类型我们希望它能变化一下，我们用标识符来代替它，这就是“模板参数”；
 
-   2. 在需要这些类型的地方，写上相对应的标识符（“模板参数”）。
+2. 在需要这些类型的地方，写上相对应的标识符（“模板参数”）。
 
-当然，这里的“可变”实际上在代码编译好后就固定下来了，可以称之为编译期的可变性。
+当然，这里的“可变”实际上在代码编译好后就固定下来了，可以称之为`编译期的可变性`。
 
 这里多啰嗦一点，主要也是想告诉大家，模板其实是个很简单的东西。
 
 下面这个例子，或许可以帮助大家解决以下两个问题：
 
-  1. 什么样的需求会使用模板来解决？
+1. 什么样的需求会使用模板来解决？
 
-  2. 怎样把脑海中的“泛型”变成真正“泛型”的代码？
+2. 怎样把脑海中的“泛型”变成真正“泛型”的代码？
 
 ```
 举个例子：generic typed function ‘add’
@@ -308,19 +379,19 @@ template <typename T> void foo()
 
 在学习模板的时候，要反复做以下的思考和练习：
 
-  1. 提出问题：我的需求能不能用模板来解决？
+1. 提出问题：我的需求能不能用模板来解决？
 
-  2. 怎么解决？
+2. 怎么解决？
 
-  3. 把解决方案用代码写出来。
+3. 把解决方案用代码写出来。
 
-  4. 如果失败了，找到原因。是知识有盲点（例如不知道怎么将 `T&` 转化成 `T`），还是不可行（比如试图利用浮点常量特化类模板，但实际上这样做是不可行的）？
+4. 如果失败了，找到原因。是知识有盲点（例如不知道怎么将 `T&` 转化成 `T`），还是不可行（比如试图利用浮点常量特化类模板，但实际上这样做是不可行的）？
 
 通过重复以上的练习，应该可以对模板的语法和含义都有所掌握。如果提出问题本身有困难，或许下面这个经典案例可以作为你思考的开始：
 
-  1. 写一个泛型的数据结构：例如，线性表，数组，链表，二叉树；
+1. 写一个泛型的数据结构：例如，线性表，数组，链表，二叉树；
 
-  2. 写一个可以在不同数据结构、不同的元素类型上工作的泛型函数，例如求和；
+2. 写一个可以在不同数据结构、不同的元素类型上工作的泛型函数，例如求和；
 
 当然和“设计模式”一样，模板在实际应用中，也会有一些固定的需求和解决方案。比较常见的场景包括：泛型（最基本的用法）、通过类型获得相应的信息（型别萃取）、编译期间的计算、类型间的推导和变换（从一个类型变换成另外一个类型，比如`boost::function`）。这些本文在以后的章节中会陆续介绍。
 
@@ -328,7 +399,7 @@ template <typename T> void foo()
 
 我们先来看一个简单的函数模板，两个数相加：
 
-``` C++
+```C++
 template <typename T> T Add(T a, T b)
 {
     return a + b;
@@ -337,13 +408,13 @@ template <typename T> T Add(T a, T b)
 
 函数模板的调用格式是：
 
-``` C++
+```C++
 函数模板名 < 模板参数列表 > ( 参数 )
 ```
 
 例如，我们想对两个 `int` 求和，那么套用类的模板实例化方法，我们可以这么写：
 
-``` C++
+```C++
 int a = 5;
 int b = 3;
 int result = Add<int>(a, b);
@@ -351,20 +422,20 @@ int result = Add<int>(a, b);
 
 这时我们等于拥有了一个新函数：
 
-``` C++
+```C++
 int Add<int>(int a, int b) { return a + b; }
 ```
 
 这时在另外一个偏远的程序角落，你也需要求和。而此时你的参数类型是 `float` ，于是你写下：
 
-``` C++
+```C++
 Add<float>(a, b);
 ```
 
 一切看起来都很完美。但如果你具备程序员的最佳美德——懒惰——的话，你肯定会这样想，我在调用 `Add<int>(a, b)` 的时候， `a` 和 `b` 匹配的都是那个 `T`。编译器就应该知道那个 `T` 实际上是 `int` 呀？为什么还要我多此一举写 `Add<int>` 呢？
 唔，我想说的是，编译器的作者也是这么想的。所以实际上你在编译器里面写下以下片段：
 
-``` C++
+```C++
 int a = 5;
 int b = 3;
 int result = Add(a, b);
@@ -372,7 +443,7 @@ int result = Add(a, b);
 
 编译器会心领神会地将 `Add` 变成 `Add<int>`。但是编译器不能面对模棱两可的答案。比如你这么写的话呢？
 
-``` C++
+```C++
 int  a = 5;
 char b = 3;
 int  result = Add(a, b);
@@ -389,7 +460,7 @@ error C2782: 'T _1_2_2::Add(T,T)' : template parameter 'T' is ambiguous
 
 不过，只要你别逼得编译器精神分裂的话，编译器其实是非常聪明的，它可以从很多的蛛丝马迹中，猜测到你真正的意图，有如下面的例子：
 
-``` C++
+```C++
 template <typename T> class A {};
 
 template <typename T> T foo( A<T> v );
@@ -402,7 +473,7 @@ foo(v);	// 它能准确地猜到 T 是 int.
 
 下面轮到你的练习时间了。你试着写了很多的例子，但是其中一个你还是犯了疑惑：
 
-``` C++
+```C++
 float data[1024];
 
 template <typename T> T GetValue(int i)
@@ -416,7 +487,7 @@ int b = GetValue(1);	// 也出错了！
 
 为什么会出错呢？你仔细想了想，原来编译器是没办法去根据返回值推断类型的。函数调用的时候，返回值被谁接受还不知道呢。如下修改后，就一切正常了：
 
-``` C++
+```C++
 float a = GetValue<float>(0);
 int b = GetValue<int>(1);
 ```
@@ -425,7 +496,7 @@ int b = GetValue<int>(1);
 
 你要写一个函数模板叫 `c_style_cast`，顾名思义，执行的是C风格的转换。然后出于方便起见，你希望它能和 `static_cast` 这样的内置转换有同样的写法。于是你写了一个use case。
 
-``` C++
+```C++
 DstT dest = c_style_cast<DstT>(src);
 ```
 
@@ -433,7 +504,7 @@ DstT dest = c_style_cast<DstT>(src);
 
 我们把手上得到的信息来拼一拼，就可以编写自己的函数模板了：
 
-``` C++
+```C++
 template <typename SrcT, typename DstT> DstT c_style_cast(SrcT v)
 {
     return (DstT)(v);
@@ -445,13 +516,13 @@ float i = c_style_cast<float>(v);
 
 嗯，很Easy嘛！我们F6一下…咦！这是什么意思！
 
-``` C++
+```C++
 error C2783: 'DstT _1_2_2::c_style_cast(SrcT)' : could not deduce template argument for 'DstT'
 ```
 
 然后你仔细的比较了一下，然后发现 … 模板参数有两个，而参数里面能得到的只有 `SrcT` 一个。结合出错信息看来关键在那个 `DstT` 上。这个时候，你死马当活马医，把模板参数写完整了：
 
-``` C++
+```C++
 float i = c_style_cast<int, float>(v);
 ```
 
@@ -461,7 +532,7 @@ float i = c_style_cast<int, float>(v);
 
 在这个例子中，能推导出来的是 `SrcT`，需要指定的是 `DstT`。把函数模板写成下面这样就可以了：
 
-``` C++
+```C++
 template <typename DstT, typename SrcT> DstT c_style_cast(SrcT v)	// 模板参数 DstT 需要人肉指定，放前面。
 {
     return (DstT)(v);
@@ -475,16 +546,16 @@ float i = c_style_cast<float>(v);  // 形象地说，DstT会先把你指定的�
 
 模板参数除了类型外（包括基本类型、结构、类类型等），也可以是一个整型数（Integral Number）。这里的整型数比较宽泛，包括布尔型，不同位数、有无符号的整型，甚至包括指针。我们将整型的模板参数和类型作为模板参数来做一个对比：
 
-``` C++
+```C++
 template <typename T> class TemplateWithType;
 template <int      V> class TemplateWithValue;
 ```
 
 我想这个时候你也更能理解 `typename` 的意思了：它相当于是模板参数的“类型”，告诉你 `T` 是一个 `typename`。
 
-按照C++ Template最初的想法，模板不就是为了提供一个类型安全、易于调试的宏吗？有类型就够了，为什么要引入整型参数呢？考虑宏，它除了代码替换，还有一个作用是作为常数出现。所以整型模板参数最基本的用途，也是定义一个常数。例如这段代码的作用：
+按照C++ Template最初的想法，模板不就是为了提供一个类型安全、易于调试的宏吗？有类型就够了，为什么要引入整型参数呢？考虑宏，它除了代码替换，还有一个作用是作为常数出现。所以整型模板参数最基本的用途，也是定义一个`常数`。例如这段代码的作用：
 
-``` C++
+```C++
 template <typename T, int Size> struct Array
 {
     T data[Size];
@@ -495,7 +566,7 @@ Array<int, 16> arr;
 
 便相当于下面这段代码：
 
-``` C++
+```C++
 class IntArrayWithSize16
 {
     int data[16]; // int 替换了 T, 16 替换了 Size
@@ -504,9 +575,9 @@ class IntArrayWithSize16
 IntArrayWithSize16 arr;
 ```
 
-其中有一点需要注意，因为模板的匹配是在编译的时候完成的，所以实例化模板的时候所使用的参数，也必须要在编译期就能确定。例如以下的例子编译器就会报错：
+其中有一点需要注意，因为模板的匹配是在编译的时候完成的，所以实例化模板的时候所使用的参数，也必须要在`编译期`就能确定。例如以下的例子编译器就会报错：
 
-``` C++
+```C++
 template <int i> class A {};
 
 void foo()
@@ -516,12 +587,13 @@ void foo()
     A<x> b; // error C2971: '_1_3::A' : template parameter 'i' : 'x' : a local variable cannot be used as a non-type argument
 }
 ```
+
 因为x不是一个编译期常量，所以 `A<x>` 就会告诉你，x是一个局部变量，不能作为一个模板参数出现。
 
 嗯，这里我们再来写几个相对复杂的例子：
 
-``` C++
-template <int i> class A 
+```C++
+template <int i> class A
 {
 public:
     void foo(int)
@@ -540,10 +612,18 @@ template <int i> int Add(int a)	// 当然也能用于函数模板
 void foo()
 {
     A<5> a;
-    B<7, A<5>, nullptr>	b; // 模板参数可以是一个无符号八位整数，可以是模板生成的类；可以是一个指针。
-    C<false, &foo> c;      // 模板参数可以是一个bool类型的常量，甚至可以是一个函数指针。
-    D<&A<3>::foo> d;       // 丧心病狂啊！它还能是一个成员函数指针！
-    int x = Add<3>(5);     // x == 8。因为整型模板参数无法从函数参数获得，所以只能是手工指定啦。
+
+    // 模板参数可以是一个无符号八位整数，可以是模板生成的类；可以是一个指针。
+    B<7, A<5>, nullptr>	b;
+
+    // 模板参数可以是一个bool类型的常量，甚至可以是一个函数指针。
+    C<false, &foo> c;
+
+    // 丧心病狂啊！它还能是一个成员函数指针！
+    D<&A<3>::foo> d;
+
+    // x == 8。因为整型模板参数无法从函数参数获得，所以只能是手工指定啦。
+    int x = Add<3>(5);
 }
 
 template <float a> class E {}; // ERROR: 别闹！早说过只能是整数类型的啦！
@@ -557,7 +637,8 @@ template <float a> class E {}; // ERROR: 别闹！早说过只能是整数类型
 
 从下一章开始，我们便进入了更加复杂和丰富的世界：讨论模板的匹配规则。其中有令人望而生畏的特化与偏特化。但是，请相信我们在序言中所提到的：将模板作为一门语言来看待，它会变得有趣而简单。
 
-#  3. 模板元编程基础
+# 3. 模板元编程基础
+
 ## 3.1. 编程，元编程，模板元编程
 
 技术的学习是一个登山的过程。第一章是最为平坦的山脚道路。而从这一章开始，则是正式的爬坡。无论是我写作还是你阅读，都需要付出比第一章更多的代价。那么问题就是，付出更多的精力学习模板是否值得？
@@ -580,7 +661,7 @@ template <float a> class E {}; // ERROR: 别闹！早说过只能是整数类型
 
 我们以数据结构举例。在程序里，你需要一些堆栈。这个堆栈的元素可能是整数、浮点或者别的什么类型。一份整型堆栈的代码可能是：
 
-``` C++
+```C++
 class StackInt
 {
 public:
@@ -599,7 +680,7 @@ public:
 
 如果你要支持浮点了，那么你只能将代码再次拷贝出来，并作如下修改：
 
-``` C++
+```C++
 class StackFloat
 {
 public:
@@ -632,7 +713,7 @@ public:
 
 宏的例子姑且不论，我们来看一看模板：
 
-``` C++
+```C++
 template <typename T>
 class Stack
 {
@@ -655,7 +736,7 @@ typedef Stack<float> StackFloat;
 
 通过模板，我们可以将形形色色的堆栈代码分为两个部分，一个部分是不变的接口，以及近乎相同的实现；另外一部分是元素的类型，它们是需要变化的。因此同函数类似，需要变化的部分，由模板参数来反映；不变的部分，则是模板内的代码。可以看到，使用模板的代码，要比不使用模板的代码简洁许多。
 
-如果元编程中所有变化的量（或者说元编程的参数），都是类型，那么这样的编程，我们有个特定的称呼，叫“泛型”。
+如果元编程中所有变化的量（或者说元编程的参数），都是类型，那么这样的编程，我们有个特定的称呼，叫“`泛型`”。
 
 但是你会问，模板的发明，仅仅是为了做和宏几乎一样的替换工作吗？可以说是，也可以说不是。一方面，很多时候模板就是为了替换类型，这个时候作用上其实和宏没什么区别。只是宏是基于文本的替换，被替换的文本本身没有任何语义。只有替换完成，编译器才能进行接下来的处理。而模板会在分析模板时以及实例化模板时时候都会进行检查，而且源代码中也能与调试符号一一对应，所以无论是编译时还是运行时，排错都相对简单。
 
@@ -667,9 +748,10 @@ Int32  : VInt32Mul(int32x4, int32x4)
 Int64  : VInt64Mul(int64x4, int64x4)
 Float  : VInt64Mul(floatx2, floatx2)
 ```
+
 所以对于Int8和Int16，我们需要提升到Int32，而Int32和Int64，各自使用自己的指令。所以我们需要实现下的逻辑：
 
-``` C++
+```C++
 for(v4a, v4b : vectorsA, vectorsB)
 {
     if type is Int8, Int16
@@ -685,7 +767,7 @@ for(v4a, v4b : vectorsA, vectorsB)
 
 嗯，聪明你果然想到了，重载也可以解决这个问题。
 
-``` C++
+```C++
 GenericMul(int8x4,  int8x4);
 GenericMul(int16x4, int16x4);
 GenericMul(int32x4, int32x4);
@@ -708,9 +790,10 @@ for(v4a, v4b : vectorsA, vectorsB)
 ## 3.2. 模板世界的If-Then-Else：类模板的特化与偏特化
 
 ### 3.2.1. 根据类型执行代码
+
 前一节的示例提出了一个要求：需要做出根据类型执行不同代码。要达成这一目的，模板并不是唯一的途径。比如之前我们所说的重载。如果把眼界放宽一些，虚函数也是根据类型执行代码的例子。此外，在C语言时代，也会有一些技法来达到这个目的，比如下面这个例子，我们需要对两个浮点做加法， 或者对两个整数做乘法：
 
-``` C
+```C
 struct Variant
 {
     union
@@ -740,7 +823,7 @@ Variant addFloatOrMulInt(Variant const* a, Variant const* b)
 
 更常见的是 `void*`:
 
-``` C++
+```C++
 define BIN_OP(type, a, op, b, result) (*(type *)(result)) = (*(type const *)(a)) op (*(type const*)(b))
 void doDiv(void* out, void const* data0, void const* data1, DATA_TYPE type)
 {
@@ -757,7 +840,7 @@ void doDiv(void* out, void const* data0, void const* data1, DATA_TYPE type)
 
 在C++中比如在 `Boost.Any` 的实现中，运用了 `typeid` 来查询类型信息。和 `typeid` 同属于RTTI机制的 `dynamic_cast`，也经常会用来做类型判别的工作。我想你应该写过类似于下面的代码：
 
-``` C++
+```C++
 IAnimal* animal = GetAnimalFromSystem();
 
 IDog* maybeDog = dynamic_cast<IDog*>(animal);
@@ -776,7 +859,7 @@ if(maybeCat)
 
 但是模板与这些方法最大的区别并不在这里。模板无论其参数或者是类型，它都是一个编译期分派的办法。编译期就能确定的东西既可以做类型检查，编译器也能进行优化，砍掉任何不必要的代码执行路径。例如在上例中，
 
-``` C++
+```C++
 template <typename T> T addFloatOrMulInt(T a, T b);
 
 // 迷之代码1：用于T是float的情况
@@ -786,7 +869,7 @@ template <typename T> T addFloatOrMulInt(T a, T b);
 
 如果你运用了模板来实现，那么当传入两个不同类型的变量，或者不是 `int` 和 `float` 变量，编译器就会提示错误。但是如果使用了我们前述的 `Variant` 来实现，编译器可就管不了那么多了。但是，成也编译期，败也编译期。最严重的“缺点”，就是你没办法根据用户输入或者别的什么在运行期间可能发生变化的量来决定它产生、或执行什么代码。比如下面的代码段，它是不成立的。
 
-``` C++
+```C++
 template <int i, int j>
 int foo() { return i + j; }
 int main()
@@ -800,7 +883,7 @@ int main()
 
 所以说，从能力上来看，模板能做的事情都是编译期完成的。编译期完成的意思就是，当你编译一个程序的时候，所有的量就都已经确定了。比如下面的这个例子：
 
-``` C++
+```C++
 int a = 3, b = 5;
 Variant aVar, bVar;
 aVar.setInt(a);			// 我们新加上的方法，怎么实现的无所谓，大家明白意思就行了。
@@ -816,7 +899,7 @@ Variant result = addFloatOrMulInt(aVar, bVar);
 
 我的高中物理老师对我说过一句令我受用至今的话：把自己能做的事情做好。编写模板程序也是一样。当你试图用模板解决问题之前，先撇开那些复杂的语法要素，用最直观的方式表达你的需求：
 
-``` C++
+```C++
 // 这里是伪代码，意思一下
 
 int|float addFloatOrMulInt(a, b)
@@ -835,7 +918,7 @@ void foo()
 {
     float a, b, c;
     c = addFloatOrMulInt(a, b);		// c = a + b;
-	
+
     int x, y, z;
     z = addFloatOrMulInt(x, y);		// z = x * y;
 }
@@ -843,7 +926,7 @@ void foo()
 
 因为这一节是讲类模板有关的特化和偏特化机制，所以我们不用普通的函数，而是用类的静态成员函数来做这个事情（这就是典型的没事找抽型）：
 
-``` C++
+```C++
 // 这里仍然是伪代码，意思一下，too。
 class AddFloatOrMulInt
 {
@@ -864,7 +947,7 @@ void foo()
 {
     float a, b, c;
     c = AddFloatOrMulInt::Do(a, b); // c = a + b;
-	
+
     int x, y, z;
     z = AddFloatOrMulInt::Do(x, y); // z = x * y;
 }
@@ -872,19 +955,20 @@ void foo()
 
 好，意思表达清楚了。我们先从调用方的角度，把这个形式改写一下：
 
-``` C++
+```C++
 void foo()
 {
     float a, b, c;
     c = AddFloatOrMulInt<float>::Do(a, b); // c = a + b;
-	
+
     int x, y, z;
     z = AddFloatOrMulInt<int>::Do(x, y); // z = x * y;
 }
 ```
+
 也许你不明白为什么要改写成现在这个样子。看不懂不怪你，怪我讲得不好。但是你别急，先看看这样改写以后能不能跟我们的目标接近一点。如果我们把 `AddFloatOrMulInt<float>::Do` 看作一个普通的函数，那么我们可以写两个实现出来：
 
-``` C++
+```C++
 float AddFloatOrMulInt<float>::Do(float a, float b)
 {
     return a + b;
@@ -899,7 +983,7 @@ void foo()
 {
     float a, b, c;
     c = AddFloatOrMulInt<float>::Do(a, b); // c = a + b;
-	
+
     int x, y, z;
     z = AddFloatOrMulInt<int>::Do(x, y); // z = x * y;
 }
@@ -907,7 +991,7 @@ void foo()
 
 这样是不是就很开心了？我们更进一步，把 `AddFloatOrMulInt<int>::Do` 换成合法的类模板：
 
-``` C++
+```C++
 // 这个是给float用的。
 template <typename T> class AddFloatOrMulInt
 {
@@ -939,8 +1023,10 @@ void foo()
     // 啊！有两个AddFloatOrMulInt，class看起来一模一样，要怎么区分呢！
 }
 ```
+
 好吧，问题来了！如何要让两个内容不同，但是模板参数形式相同的类进行区分呢？特化！特化（specialization）是根据一个或多个特殊的整数或类型，给出模板实例化时的一个指定内容。我们先来看特化是怎么应用到这个问题上的。
-``` C++
+
+```C++
 // 首先，要写出模板的一般形式（原型）
 template <typename T> class AddFloatOrMulInt
 {
@@ -956,7 +1042,7 @@ template <typename T> class AddFloatOrMulInt
 template <> class AddFloatOrMulInt<int>
 {
 public:
-    static int Do(int a, int b) // 
+    static int Do(int a, int b) //
     {
         return a * b;
     }
@@ -977,9 +1063,10 @@ void foo()
     // 这里面就不写了
 }
 ```
+
 我们再把特化的形式拿出来一瞧：这货有点怪啊： `template <> class AddFloatOrMulInt<int>`。别急，我给你解释一下。
 
-``` C++
+```C++
 // 我们这个模板的基本形式是什么？
 template <typename T> class AddFloatOrMulInt;
 
@@ -996,7 +1083,7 @@ template </* 这里要填什么？ */> class AddFloatOrMulInt<int>;
 // 所以这里放空。
 template <> class AddFloatOrMulInt<int>
 {
-    // ... 针对Int的实现 ... 
+    // ... 针对Int的实现 ...
 };
 
 // Bingo!
@@ -1004,7 +1091,7 @@ template <> class AddFloatOrMulInt<int>
 
 哈，这样就好了。我们来做一个练习。我们有一些类型，然后你要用模板做一个对照表，让类型对应上一个数字。我先来做一个示范：
 
-``` C++
+```C++
 
 template <typename T> class TypeToID
 {
@@ -1021,12 +1108,13 @@ public:
 
 然后呢，你的任务就是，要所有无符号的整数类型的特化（其实就是`uint8_t`到`uint64_t`啦），把所有的基本类型都赋予一个ID（当然是不一样的啦）。当你做完后呢，可以把类型所对应的ID打印出来，我仍然以 `uint8_t` 为例：
 
-``` C++
+```C++
 void PrintID()
 {
     cout << "ID of uint8_t: " << TypeToID<uint8_t>::ID << endl;
 }
 ```
+
 嗯，看起来挺简单的，是吧。但是这里透露出了一个非常重要的信号，我希望你已经能察觉出来了： `TypeToID` 如同是一个函数。这个函数只能在编译期间执行。它输入一个类型，输出一个ID。
 
 如果你体味到了这一点，那么恭喜你，你的模板元编程已经开悟了。
@@ -1035,7 +1123,7 @@ void PrintID()
 
 在上一节结束之后，你一定做了许多的练习。我们再来做三个练习。第一，给`float`一个ID；第二，给`void*`一个ID；第三，给任意类型的指针一个ID。先来做第一个:
 
-``` C++
+```C++
 // ...
 // TypeToID 的模板“原型”
 // ...
@@ -1049,7 +1137,7 @@ public:
 
 嗯， 这个你已经了然于心了。那么`void*`呢？你想了想，这已经是一个复合类型了。不错你还是战战兢兢地写了下来：
 
-``` C++
+```C++
 template <> class TypeToID<void*>
 {
 public:
@@ -1064,7 +1152,7 @@ void PrintID()
 
 遍译运行一下，对了。模板不过如此嘛。然后你觉得自己已经完全掌握了，并试图将所有C++类型都放到模板里面，开始了自我折磨的过程：
 
-``` C++
+```C++
 class ClassB {};
 
 template <> class TypeToID<void ()>;      // 函数的TypeID
@@ -1075,13 +1163,13 @@ template <> class TypeToID<int (ClassB::*[3])(void*, float[2])>; // 我也不知
 
 甚至连 `const` 和 `volatile` 都能装进去：
 
-``` C++
+```C++
 template <> class TypeToID<int const * volatile * const volatile>;
 ```
 
 此时就很明白了，只要 `<>` 内填进去的是一个C++能解析的合法类型，模板都能让你特化。不过这个时候如果你一点都没有写错的话， `PrintID` 中只打印了我们提供了特化的类型的ID。那如果我们没有为之提供特化的类型呢？比如说double？OK，实践出真知，我们来尝试着运行一下：
 
-``` C++
+```C++
 void PrintID()
 {
     cout << "ID of double: " << TypeToID<double>::ID << endl;
@@ -1092,7 +1180,7 @@ void PrintID()
 
 不过这里有一个问题要理清一下。和继承不同，类模板的“原型”和它的特化类在实现上是没有关系的，并不是在类模板中写了 `ID` 这个Member，那所有的特化就必须要加入 `ID` 这个Member，或者特化就自动有了这个成员。完全没这回事。我们把类模板改成以下形式，或许能看的更清楚一点：
 
-``` C++
+```C++
 template <typename T> class TypeToID
 {
 public:
@@ -1119,7 +1207,7 @@ void PrintID()
 
 比如说`copy`。
 
-``` C
+```C
 void copy(void* dst, void const* src, size_t elemSize, size_t elemCount, void (*copyElem)(void* dstElem, void const* srcElem))
 {
     void const* reader = src;
@@ -1141,19 +1229,19 @@ void copy(void* dst, void const* src, size_t elemSize, size_t elemCount, void (*
 
 首先，我们需要一个`typename T`来指代“任意类型”这四个字：
 
-``` C++
+```C++
 template <typename T>
 ```
 
 接下来，我们要写函数原型：
 
-``` C++
+```C++
 void copy(?? dest, ?? src, size_t elemCount);
 ```
 
 这里的 `??` 要怎么写呢？既然我们有了模板类型参数T，那我们不如就按照经验，写 `T*` 看看。
 
-``` C++
+```C++
 template <typename T>
 void copy(T* dst, T const* src, size_t elemCount);
 ```
@@ -1162,7 +1250,7 @@ void copy(T* dst, T const* src, size_t elemCount);
 
 最后就是实现：
 
-``` C++
+```C++
 template <typename T>
 void copy(T* dst, T const* src, size_t elemCount)
 {
@@ -1177,7 +1265,7 @@ void copy(T* dst, T const* src, size_t elemCount)
 
 最后，我们把函数模板学到的东西，也应用到类模板里面：
 
-``` C++
+```C++
 template <typename T> // 嗯，需要一个T
 class TypeToID<T*> // 我要对所有的指针类型特化，所以这里就写T*
 {
@@ -1188,7 +1276,7 @@ public:
 
 最后写个例子来测试一下，看看我们的 `T*` 能不能搞定 `float*`：
 
-``` C++
+```C++
 void PrintID()
 {
     cout << "ID of float*: " << TypeToID<float*>::ID << endl;
@@ -1197,7 +1285,7 @@ void PrintID()
 
 哈哈，大功告成。嗯，别急着高兴。待我问一个问题：你知道 `TypeToID<float*>` 后，这里的T是什么吗？换句话说，你知道下面这段代码打印的是什么吗？
 
-``` C++
+```C++
 // ...
 // TypeToID 的其他代码，略过不表
 // ...
@@ -1218,13 +1306,13 @@ void PrintID()
 
 别急着运行，你先猜。
 
--------------------------  这里是给勤于思考的码猴的分割线  -------------------------------
+------------------------- 这里是给勤于思考的码猴的分割线 -------------------------------
 
 OK，猜出来了吗，T是`float`。为什么呢？因为你用 `float *` 匹配了 `T *`，所以 `T` 就对应 `float` 了。没想清楚的自己再多体会一下。
 
 嗯，所以实际上，我们可以利用这个特性做一件事情：把指针类型的那个指针给“干掉”：
 
-``` C++
+```C++
 template <typename T>
 class RemovePointer
 {
@@ -1248,7 +1336,7 @@ void Foo()
 
 当然啦，这里我们实现的不算是真正的 `RemovePointer`，因为我们只去掉了一层指针。而如果传进来的是类似 `RemovePointer<int**>` 这样的东西呢？是的没错，去掉一层之后还是一个指针。`RemovePointer<int**>::Result` 应该是一个 `int*`，要怎么才能实现我们想要的呢？聪明的你一定能想到：只要像剥洋葱一样，一层一层一层地剥开，不就好了吗！相应地我们应该怎么实现呢？可以把 `RemovePointer` 的特化版本改成这样（当然如果有一些不明白的地方你可以暂时跳过，接着往下看，很快就会明白的）：
 
-``` C++
+```C++
 template <typename T>
 class RemovePointer<T*>
 {
@@ -1264,7 +1352,7 @@ public:
 
 OK，回到我们之前的话题，如果这个时候，我需要给 `int*` 提供一个更加特殊的特化，那么我还得多提供一个：
 
-``` C++
+```C++
 // ...
 // TypeToID 的其他代码，略过不表
 // ...
@@ -1299,15 +1387,16 @@ void PrintID()
 ## 3.3. 即用即推导
 
 ### 3.3.1. 视若无睹的语法错误
+
 这一节我们将讲述模板一个非常重要的行为特点：那就是什么时候编译器会对模板进行推导，推导到什么程度。
 
 这一知识，对于理解模板的编译期行为、以及修正模板编译错误都非常重要。
 
 我们先来看一个例子：
 
-``` C++
+```C++
 template <typename T> struct X {};
-	
+
 template <typename T> struct Y
 {
     typedef X<T> ReboundType;				        // 类型定义1
@@ -1335,26 +1424,30 @@ template <typename T> struct Y
 然而，Template引入的“双阶段名称查找（Two phase name lookup）”堪称是C++中最黑暗的角落 —— 这是LLVM的团队自己在博客上说的 —— 因此在这里，我们还是有必要去了解标准中是如何规定的。
 
 ### 3.3.2. 名称查找：I am who I am
+
 在C++标准中对于“名称查找（name lookup）”这个高大上的名词的诠释，主要集中出现在三处。第一处是3.4节，标题名就叫“Name Lookup”；第二处在10.2节，继承关系中的名称查找；第三处在14.6节，名称解析（name resolution）。
 
 名称查找/名称解析，是编译器的基石。对编译原理稍有了解的人，都知道“符号表”的存在及重要意义。考虑一段最基本的C代码：
-``` C
+
+```C
 int a = 0;
 int b;
 b = (a + 1) * 2;
 printf("Result: %d", b);
 ```
+
 在这段代码中，所有出现的符号可以分为以下几类：
 
-* `int`：类型标识符，代表整型；
-* `a`, `b`, `printf`：变量名或函数名；
-* `=`, `+`, `*`：运算符；
-* `,`, `;`, `(`, `)`：分隔符；
+- `int`：类型标识符，代表整型；
+- `a`, `b`, `printf`：变量名或函数名；
+- `=`, `+`, `*`：运算符；
+- `,`, `;`, `(`, `)`：分隔符；
 
 那么，编译器怎么知道`int`就是整数类型，`b=(a+1)*2`中的`a`和`b`就是整型变量呢？这就是名称查找/名称解析的作用：它告诉编译器，这个标识符（identifer）是在哪里被声明或定义的，它究竟是什么意思。
 
 也正因为这个机制非常基础，所以它才会面临各种可能的情况，编译器也要想尽办法让它在大部分场合都表现的合理。比如我们常见的作用域规则，就是为了对付名称在不同代码块中传播、并且遇到重名要如何处理的问题。下面是一个最简单的、大家在语言入门过程中都会碰到的一个例子：
-``` C++
+
+```C++
 int a = 0;
 void f() {
     int a = 0;
@@ -1378,7 +1471,8 @@ Outside <a>: 0
 我想大家尽管不能处理所有名称查找中所遇到的问题，但是对一些常见的名称查找规则也有了充分的经验，可以解决一些常见的问题。
 但是模板的引入，使得名称查找这一本来就不简单的基本问题变得更加复杂了。
 考虑下面这个例子：
-``` C++
+
+```C++
 struct A  { int a; };
 struct AB { int a, b; };
 struct C  { int c; };
@@ -1389,6 +1483,7 @@ template <typename T> foo(T& v0, C& v1){
     v1.c = 3;
 }
 ```
+
 简单分析上述代码很容易得到以下结论：
 
 1. 函数`foo`中的变量`v1`已经确定是`struct C`的实例，所以，`v1.a = 2;`会导致编译错误，`v1.c = 3;`是正确的代码；
@@ -1400,9 +1495,9 @@ template <typename T> foo(T& v0, C& v1){
 
 > **1)** 模板定义中能够出现以下三类名称：
 
-> * 模板名称、或模板实现中所定义的名称；
-> * 和模板参数有关的名称；
-> * 模板定义所在的定义域内能看到的名称。
+> - 模板名称、或模板实现中所定义的名称；
+> - 和模板参数有关的名称；
+> - 模板定义所在的定义域内能看到的名称。
 
 > …
 
@@ -1412,7 +1507,7 @@ template <typename T> foo(T& v0, C& v1){
 
 > **14.6.2 依赖性名称（Dependent names）**
 
-> **1)** …（模板定义中的）表达式和类型可能会依赖于模板参数，并且模板参数会影响到名称查找的作用域 …  如果表达式中有操作数依赖于模板参数，那么整个表达式都依赖于模板参数，名称查找延期到**模板实例化时**进行。并且定义时和实例化时的上下文都会参与名称查找。（依赖性）表达式可以分为类型依赖（类型指模板参数的类型）或值依赖。
+> **1)** …（模板定义中的）表达式和类型可能会依赖于模板参数，并且模板参数会影响到名称查找的作用域 … 如果表达式中有操作数依赖于模板参数，那么整个表达式都依赖于模板参数，名称查找延期到**模板实例化时**进行。并且定义时和实例化时的上下文都会参与名称查找。（依赖性）表达式可以分为类型依赖（类型指模板参数的类型）或值依赖。
 
 > **14.6.2.2 类型依赖的表达式**
 
@@ -1457,6 +1552,7 @@ void foo(){
     A<T> b;
 }
 ```
+
 在这段简短的代码中，就包含了两个歧义的可能，一是`A`是模板，于是`A<T>`是一个实例化的类型，`b`是变量，另外一种是比较表达式（Comparison Expression）的组合，`((A < T) > b)`。
 
 甚至词法分析也会受到语义的干扰，C++11中才明确被修正的`vector<vector<int>>`，就因为`>>`被误解为右移或流操作符，而导致某些编译器上的错误。因此，在语义没有确定之前，连语法都没有分析的价值。
@@ -1464,6 +1560,7 @@ void foo(){
 大约是基于如此考量，为了偷懒，MSVC将包括所有模板成员函数的语法/语义分析工作都挪到了第二个Phase，于是乎连带着语法分析都送进了第二个阶段。符合标准么？显然不符合。
 
 但是这里值得一提的是，MSVC的做法和标准相比，虽然投机取巧，但并非有弊无利。我们来先说一说坏处。考虑以下例子：
+
 ```C++
 // ----------- X.h ------------
 
@@ -1474,17 +1571,19 @@ template <typename T> struct X {
 // ---------- X.cpp -----------
 
 // ... 一些代码 ...
-X<int> xi; 
+X<int> xi;
 // ... 一些代码 ...
 X<float> xf;
 // ... 一些代码 ...
 ```
+
 此时如果X中有一些与模板参数无关的错误，如果名称查找/语义分析在两个阶段完成，那么这些错误会很早、且唯一的被提示出来；但是如果一切都在实例化时处理，那么可能会导致不同的实例化过程提示同样的错误。而模板在运用过程中，往往会产生很多实例，此时便会大量报告同样的错误。
 
 当然，MSVC并不会真的这么做。根据推测，最终他们是合并了相同的错误。因为即便对于模板参数相关的编译错误，也只能看到最后一次实例化的错误信息：
+
 ```C++
 template <typename T> struct X {};
-	
+
 template <typename T> struct Y
 {
     typedef X<T> ReboundType; // 类型定义1
@@ -1503,6 +1602,7 @@ void poo(){
 ```
 
 MSVC下和模板相关的错误只有一个：
+
 ```
 error C2039: 'MemberType': is not a member of 'X<T>'
           with
@@ -1510,6 +1610,7 @@ error C2039: 'MemberType': is not a member of 'X<T>'
               T=float
           ]
 ```
+
 然后是一些语法错误，比如`MemberType`不是一个合法的标识符之类的。这样甚至你会误以为`int`情况下模板的实例化是正确的。虽然在有了经验之后会发现这个问题挺荒唐的，但是仍然会让新手有困惑。
 
 相比之下，更加遵守标准的Clang在错误提示上就要清晰许多：
@@ -1536,6 +1637,7 @@ error: no type named 'MemberType' in 'X<float>'
                   ^
 4 errors generated.
 ```
+
 可以看到，Clang的提示和标准更加契合。它很好地区分了模板在定义和实例化时分别产生的错误。
 
 另一个缺点也与之类似。因为没有足够的检查，如果你写的模板没有被实例化，那么很可能缺陷会一直存在于代码之中。特别是模板代码多在头文件。虽然不如接口那么重要，但也是属于被公开的部分，别人很可能会踩到坑上。缺陷一旦传播开修复起来就没那么容易了。
@@ -1558,7 +1660,9 @@ void main() {
     x.foo(5);
 }
 ```
+
 这个例子在Clang中是错误的，因为：
+
 ```
 error: variable has incomplete type 'A'
                         A a;
@@ -1585,7 +1689,7 @@ struct A { int v; };
 template <typename T> void X<T>::convertTo(A& a) {
    a.v = v;
 }
-    
+
 void main() {
     X<int> x;
     x.foo(5);
@@ -1596,13 +1700,13 @@ void main() {
 
 扩展阅读： [The Dreaded Two-Phase Name Lookup][2]
 
-### 3.3.3. “多余的”  typename 关键字
+### 3.3.3. “多余的” typename 关键字
 
 到了这里，2.3.1 中提到的四个问题，还有三个没有解决：
 
 ```C++
 template <typename T> struct X {};
-	
+
 template <typename T> struct Y
 {
     typedef X<T> ReboundType;						// 这里为什么是正确的？
@@ -1619,15 +1723,15 @@ template <typename T> struct Y
     // X可以查找到原型；
     // X<T>是一个依赖性名称，模板定义阶段并不管X<T>是不是正确的。
     typedef X<T> ReboundType;
-	
+
     // X可以查找到原型；
     // X<T>是一个依赖性名称，X<T>::MemberType也是一个依赖性名称；
     // 所以模板声明时也不会管X模板里面有没有MemberType这回事。
     typedef typename X<T>::MemberType MemberType2;
-	
+
     // UnknownType 不是一个依赖性名称
     // 而且这个名字在当前作用域中不存在，所以直接报错。
-    typedef UnknownType MemberType3;				
+    typedef UnknownType MemberType3;
 };
 ```
 
@@ -1665,7 +1769,7 @@ template <typename T> struct X {
     typedef X<T> TA; // 编译器当然知道 X<T> 是一个类型。
     typedef X    TB; // X 等价于 X<T> 的缩写
     typedef T    TC; // T 不是一个类型还玩毛
-    
+
     // ！！！注意我要变形了！！！
     class Y {
         typedef X<T>     TD;          // X 的内部，既然外部高枕无忧，内部更不用说了
@@ -1676,7 +1780,7 @@ template <typename T> struct X {
                                       // 因为，X<T*>和X<T>不一样哦，
                                       // 它可能会在实例化的时候被别的偏特化给抢过去实现了。
     };
-    
+
     typedef A TG;                   // 嗯，没问题，A在外面声明啦
     typedef B<T> TH;                // B<T>也是一个类型
     typedef typename B<T>::type TI; // 嗯，因为不知道B<T>::type的信息，
@@ -1699,7 +1803,7 @@ template <typename T> struct X {
 
 从下一章开始，我们将进入元编程环节。我们将使用大量的示例，一方面帮助巩固大家学到的模板知识，一方面也会引导大家使用函数式思维去解决常见的问题。
 
-#   4. 深入理解特化与偏特化
+# 4. 深入理解特化与偏特化
 
 ## 4.1. 正确的理解偏特化
 
@@ -1782,7 +1886,7 @@ DoWork<float*> pf; // (5)
 TemplateDict[DoWork<T>] = {
     DoWork<int>,
     DoWork<float>,
-    DoWork<U*>                     
+    DoWork<U*>
 };
 ```
 
@@ -1803,7 +1907,7 @@ TemplateDict[DoWork<T>] = {
 那么根据上面的步骤所展现的基本原理，我们随便来几个练习：
 
 ```C++
-template <typename T, typename U> struct X            ;    // 0 
+template <typename T, typename U> struct X            ;    // 0
                                                            // 原型有两个类型参数
                                                            // 所以下面的这些偏特化的实参列表
                                                            // 也需要两个类型参数对应
@@ -1820,14 +1924,14 @@ template <typename T>             struct X<unique_ptr<T>, shared_ptr<T>>; // 8
 // 以下特化，分别对应哪个偏特化的实例？
 // 此时偏特化中的T或U分别是什么类型？
 
-X<float*,  int>      v0;                       
-X<double*, int>      v1;                       
-X<double,  double>   v2;                          
-X<float*,  double*>  v3;                           
-X<float*,  float*>   v4;                          
-X<double,  float*>   v5;                          
-X<int,     double*>  v6;                           
-X<int*,    int>      v7;                       
+X<float*,  int>      v0;
+X<double*, int>      v1;
+X<double,  double>   v2;
+X<float*,  double*>  v3;
+X<float*,  float*>   v4;
+X<double,  float*>   v5;
+X<int,     double*>  v6;
+X<int*,    int>      v7;
 X<double*, double>   v8;
 ```
 
@@ -1839,19 +1943,19 @@ X<double*, double>   v8;
 
 > N3337, 14.8.2.5/8
 
-> 令`T`是模板类型实参或者类型列表（如 _int, float, double_  这样的，`TT`是template-template实参（参见6.2节），`i`是模板的非类型参数（整数、指针等），则以下形式的形参都会参与匹配：
+> 令`T`是模板类型实参或者类型列表（如 _int, float, double_ 这样的，`TT`是template-template实参（参见6.2节），`i`是模板的非类型参数（整数、指针等），则以下形式的形参都会参与匹配：
 
 > `T`, `cv-list T`, `T*`, `template-name <T>`, `T&`, `T&&`
 
->`T [ integer-constant ]`
+> `T [ integer-constant ]`
 
->`type (T)`, `T()`, `T(T)`
+> `type (T)`, `T()`, `T(T)`
 
->`T type ::*`, `type T::*`, `T T::*`
+> `T type ::*`, `type T::*`, `T T::*`
 
->`T (type ::*)()`, `type (T::*)()`, `type (type ::*)(T)`, `type (T::*)(T)`, `T (type ::*)(T)`, `T (T::*)()`, `T (T::*)(T)`
+> `T (type ::*)()`, `type (T::*)()`, `type (type ::*)(T)`, `type (T::*)(T)`, `T (type ::*)(T)`, `T (T::*)()`, `T (T::*)(T)`
 
->`type [i]`, `template-name <i>`, `TT<T>`, `TT<i>`, `TT<>`
+> `type [i]`, `template-name <i>`, `TT<T>`, `TT<i>`, `TT<>`
 
 对于某些实例化，偏特化的选择并不是唯一的。比如v4的参数是`<float*, float*>`，能够匹配的就有三条规则，1，6和7。很显然，6还是比7好一些，因为能多匹配一个指针。但是1和6，就很难说清楚谁更好了。一个说明了两者类型相同；另外一个则说明了两者都是指针。所以在这里，编译器也没办法决定使用那个，只好报出了编译器错误。
 
@@ -1889,7 +1993,7 @@ template <> struct DoWork<int,    int> {};  // (3) 这是 int, int 类型的特�
 
 所幸模板参数也有一个和函数参数相同的特性：默认实参（Default Arguments）。只需要一个例子，你们就能看明白了[`goo.gl/TtmcY9`](http://goo.gl/TtmcY9)：
 
-``` C++
+```C++
 template <typename T0, typename T1 = void> struct DoWork;
 
 template <typename T> struct DoWork<T> {};
@@ -2109,25 +2213,25 @@ void foo(){
 
 1. 对`SafeDivide<int>`
 
-  * 通过匹配类模板的泛化形式，计算默认实参，可以知道我们要匹配的模板实参是`SafeDivide<int, true_type>`
-  
-  * 计算两个偏特化的形式的匹配：A得到`<int, false_type>`,和B得到 `<int, true_type>`
-  
-  * 最后偏特化B的匹配结果和模板实参一致，使用它。
-  
+- 通过匹配类模板的泛化形式，计算默认实参，可以知道我们要匹配的模板实参是`SafeDivide<int, true_type>`
+
+- 计算两个偏特化的形式的匹配：A得到`<int, false_type>`,和B得到 `<int, true_type>`
+
+- 最后偏特化B的匹配结果和模板实参一致，使用它。
+
 2. 针对`SafeDivide<complex<float>>`
-  
-  * 通过匹配类模板的泛化形式，可以知道我们要匹配的模板实参是`SafeDivide<complex<float>, true_type>`
-  
-  * 计算两个偏特化形式的匹配：A和B均得到`SafeDivide<complex<float>, false_type>`
-  
-  * A和B都与模板实参无法匹配，所以使用原型，调用`CustomDiv`
+
+- 通过匹配类模板的泛化形式，可以知道我们要匹配的模板实参是`SafeDivide<complex<float>, true_type>`
+
+- 计算两个偏特化形式的匹配：A和B均得到`SafeDivide<complex<float>, false_type>`
+
+- A和B都与模板实参无法匹配，所以使用原型，调用`CustomDiv`
 
 ## 4.2. 后悔药：SFINAE
 
 考虑下面这个函数模板：
 
-``` C++
+```C++
 template <typename T, typename U>
 void foo(T t, typename U::type u) {
     // ...
@@ -2136,7 +2240,7 @@ void foo(T t, typename U::type u) {
 
 到本节为止，我们所有的例子都保证了一旦咱们敲定了模板参数中 `T` 和 `U`，函数参变量 `t` 和 `u` 的类型都是成立的，比如下面这样：
 
-``` C++
+```C++
 struct X {
     typedef float type;
 };
@@ -2204,7 +2308,7 @@ void foo(T t, typename U::type u) {
 template <typename T, typename U>
 void foo(T t, typename U::type2 u) {
   // ...
-} 
+}
 void callFoo() {
     foo<int, X>(5, 5.0); // T == int, typename U::type == X::type == float
     foo<int, Y>( 1, 1.0 ); // ???
@@ -2237,6 +2341,7 @@ default:
     throw WrongToken(token);
 }
 ```
+
 假如我们当前的token是 `LITERAL_STRING` 的时候，那么第一步它在匹配 `IDENTIFIER` 时，我们可以认为它失败（failure）了，但是它在第三步就会匹配上，所以它并不是一个错误。
 
 但是如果这个token既不是标识符、也不是数字字面量、也不是字符串字面量，而且我们的语法规定除了这三类值以外其他统统都是非法的时，我们才认为它是一个error。
@@ -2266,19 +2371,19 @@ void callFoo() {
 
 所谓substitution，就是将函数模板中的形参，替换成实参的过程。概念很简洁但是实现却颇多细节，所以C++标准中对这一概念的解释比较拗口。它分别指出了以下几点：
 
-  * 什么时候函数模板会发生实参 替代（Substitute） 形参的行为；
-  
-  * 什么样的行为被称作 Substitution；
-  
-  * 什么样的行为不可以被称作 Substitution Failure —— 他们叫SFINAE error。
-  
+- 什么时候函数模板会发生实参 替代（Substitute） 形参的行为；
+
+- 什么样的行为被称作 Substitution；
+
+- 什么样的行为不可以被称作 Substitution Failure —— 他们叫SFINAE error。
+
 我们在此不再详述，有兴趣的同学可以参照[`这里`](http://en.cppreference.com/w/cpp/language/sfinae)，这是标准的一个精炼版本。这里我们简单的解释一下。
 
 考虑我们有这么个函数签名：
 
 ```C++
 template <
-    typename T0, 
+    typename T0,
     // 一大坨其他模板参数
     typename U = /* 和前面T有关的一大坨 */
 >
@@ -2296,7 +2401,7 @@ functionName (
 
 ```C++
 template <
-    typename T, 
+    typename T,
     typename U = typename vector<T>::iterator // 1
 >
 typename vector<T>::value_type  // 1
@@ -2391,7 +2496,7 @@ template <typename T> void inc_counter(T& intTypeCounter);
 
 ```C++
 template <typename T> void inc_counter(
-    T& counterObj, 
+    T& counterObj,
     typename std::enable_if<
         std::is_base_of<ICounter, T>::value
     >::type* = nullptr );
@@ -2423,13 +2528,12 @@ void inc_counter(ICounter& counterObj);
 
 这也提醒我们，当你觉得需要写 `enable_if` 的时候，首先要考虑到以下可能的替代方案：
 
-  * 重载（适用于函数模板）
-  
-  * 偏特化（适用于类模板）
-  
-  * 虚函数
-   
-  
+- 重载（适用于函数模板）
+
+- 偏特化（适用于类模板）
+
+- 虚函数
+
 但是问题到了这里并没有结束。因为 `increase` 毕竟是个虚函数。假如 `Counter` 需要调用的地方实在是太多了，这个时候我们会非常期望 `increase` 不再是个虚函数以提高性能。此时我们会调整继承层级：
 
 ```C++
@@ -2467,7 +2571,6 @@ void doSomething() {
 
 所以这个时候，就能看到 `enable_if` 是如何通过 SFINAE 发挥威力的了：
 
-
 ```C++
 include <type_traits>
 include <utility>
@@ -2481,11 +2584,11 @@ struct Counter: public ICounter {
 };
 
 template <typename T> void inc_counter(
-    T& counterObj, 
+    T& counterObj,
     typename std::enable_if<
         std::is_base_of<ICounter, T>::value
     >::type* = nullptr ){
-    counterObj.increase();  
+    counterObj.increase();
 }
 
 template <typename T> void inc_counter(
@@ -2495,7 +2598,7 @@ template <typename T> void inc_counter(
     >::type* = nullptr ){
     ++counterInt;
 }
-  
+
 void doSomething() {
     Counter cntObj;
     uint32_t cntUI32;
@@ -2565,7 +2668,7 @@ void foo(float&& a);
 ```C++
 template <typename ArgT>
 void foo(
-    ArgT&& a, 
+    ArgT&& a,
     typename std::enabled_if<
         std::is_same<std::decay_t<ArgT>, float>::value
     >::type* = nullptr
@@ -2579,6 +2682,7 @@ void foo(
 ## 4.3. Concept “概念”：对模板参数约束的直接描述
 
 ### 4.3.1. “概念” 解决了什么问题
+
 从上一节可以看出，我们兜兜转转了那么久，就是为了解决两个问题：
 
 1. 在模板进行特化的时候，盘算一下并告诉编译器这里能不能特化；
@@ -2587,7 +2691,7 @@ void foo(
 
 如果语言能允许用户直接描述需求并传达给编译器，不就不用这么麻烦了么。其实在很多现代语言中，都有类似的语言要素存在，比如C的约束（constraint on type parameters)：
 
-``` C
+```C
 public class Employee {
   // ...
 }
@@ -2596,6 +2700,7 @@ public class GenericList<T> where T : Employee {
   // ...
 }
 ```
+
 上例就非常清晰的呈现了我们对`GenericList`中`T`的要求是：它得是一个`Employee`或`Employee`的子类。
 
 这种“清晰的”类型约束，在C++中称作概念（Concept）。最早有迹可循的概念相关工作应当从2003年后就开始了。2006年Bjarne在POPL 06上的一篇报告“Specifying C++ concepts”算是“近代”Concept工作的首次公开亮相。委员会为Concept筹划数年，在2008年提出了第一版Concepts提案，试图进入C++0x的标准中。这也是Concept第一次在C++社群当中被广泛“炒作”。不过2009年的会议，让“近代”Concept在N2617草案戛然而止。
@@ -2605,34 +2710,38 @@ public class GenericList<T> where T : Employee {
 总之，在concept进入标准之后，模板特化的类型约束写起来就方便与直接多了。而且这些约束之间还可以像表达式一样复用和组合。虽然因为C++类型系统自身的琐碎导致基础库中的concept仍然相当的冗长，但是比起之前起码具备了可用性。
 
 比如我们拿上一节中最后一个例子作为对比：
-``` C++
+
+```C++
 // SFINAE
 template <typename ArgT>
 void foo(
-    ArgT&& a, 
+    ArgT&& a,
     typename std::enabled_if<
         std::is_same<std::decay_t<ArgT>, float>::value
     >::type* = nullptr
 );
 // Concept
 template <typename ArgT>
-  requires std::same_as<std::remove_cvref<T>, float> 
+  requires std::same_as<std::remove_cvref<T>, float>
 void foo(ArgT&& a)  {
 }
 ```
+
 可以看到，concept之后的表达式消除了语法噪音，显得更为简洁一些。而对于之前++的例子，concept下则更为扼要：
+
 ```C++
 template <typename T> concept Incrementable = requires (T t) { ++t; }
 template <Incrementable T>
-void inc_counter(T& intTypeCounter) { 
+void inc_counter(T& intTypeCounter) {
     ++intTypeCounter;
 }
 ```
+
 直接告诉编译器，我们对T的要求是你得有`++`。
 
 当然有人会问，那能不能直接写成以下形式，不是更简单吗？
 
-``` C++
+```C++
 template <typename T> requires (T t) { ++t; }
 void inc_counter(T& cnt);
 ```
@@ -2642,7 +2751,7 @@ void inc_counter(T& cnt);
 
 当然是可以的！C++就是这么的简（~~有~~）单（~~病~~）！
 
-``` C++
+```C++
 template <typename T> requires (requires (T t) { ++t; })
 void inc_counter(T& cnt);
 ```
@@ -2661,6 +2770,7 @@ void Inc(T& v, std::decay_t<decltype(++v)>* = nullptr)
 ```
 
 而这里是使用了concept的提示。
+
 ```
 <source>:25:5: error: no matching function for call to 'Inc_Concept'
     Inc_Concept(y);
@@ -2675,17 +2785,16 @@ template <Incrementable T>
 concept Incrementable = requires(T t) { ++t; };
 ```
 
-虽然在这个例子中，通过 *Concept* 获得出错提示看起来要比使用 *SFINAE* 所获得的错误描述要更长一点，但是对于更加复杂类型来说，则会友善许多。以后会找个例子给大家陈述。
+虽然在这个例子中，通过 _Concept_ 获得出错提示看起来要比使用 _SFINAE_ 所获得的错误描述要更长一点，但是对于更加复杂类型来说，则会友善许多。以后会找个例子给大家陈述。
 
 ### 4.3.2. "概念"入门
-
 
 # 5. 未完成章节
 
 ```
 # 6. 元编程下的数据结构与算法
 ## 6.1. 表达式与数值计算
-## 6.2. 获得类型的属性——类型萃取（Type Traits） 
+## 6.2. 获得类型的属性——类型萃取（Type Traits）
 ## 6.3. 列表与数组
 ## 6.4. 字典结构
 ## 6.5. “快速”排序
@@ -2718,8 +2827,6 @@ alexandrescu 关于 min max 的讨论：《再谈Min和Max》
 std::experimental::any / boost.any 对于 reference 的处理
 ```
 
-  [1]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf
-  
-  [2]: http://blog.llvm.org/2009/12/dreaded-two-phase-name-lookup.html
-  
-  [3]: https://goo.gl/zCRNYx
+[1]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf
+[2]: http://blog.llvm.org/2009/12/dreaded-two-phase-name-lookup.html
+[3]: https://goo.gl/zCRNYx
