@@ -1,12 +1,12 @@
 # Coding Tree
 
-https://github.com/mouday/coding-tree
+https://github.com/mouday/coding-tree1
 
 ![](https://mouday.github.io/img/2024/08/08/ba3ruee.png)
 
-- 国际地址：https://mouday.github.io/coding-tree/
+- 国际地址：https://mouday.github.io/coding-tree1/
 
-- 国内镜像：https://mouday.gitee.io/coding-tree/
+- 国内镜像：https://mouday.gitee.io/coding-tree1/
 
 ![](https://weixin.sogou.com/weixin?type=1&s_from=input&query=Python%E4%BC%98%E9%80%89)
 

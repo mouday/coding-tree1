@@ -7,7 +7,7 @@ export default defineConfig({
   lang: "zh-CN",
   title: "Coding Tree",
   description: "编程学习路上的笔记与知识整理收集",
-  base: "/coding-tree/",
+  base: "/coding-tree1/",
   ignoreDeadLinks: true,
   lastUpdated: true,
   markdown: {
@@ -17,7 +17,7 @@ export default defineConfig({
     }
   },
   head: [
-    ["link", { rel: "icon", href: "/coding-tree/favicon.ico" }],
+    ["link", { rel: "icon", href: "/coding-tree1/favicon.ico" }],
 
     // 百度统计
     [
@@ -35,7 +35,7 @@ var _hmt = _hmt || [];
     ],
   ],
   sitemap: {
-    hostname: "https://mouday.github.io/coding-tree/",
+    hostname: "https://mouday.github.io/coding-tree1/",
   },
   locales: {
     "/": {
@@ -145,7 +145,7 @@ var _hmt = _hmt || [];
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/mouday/coding-tree" },
+      { icon: "github", link: "https://github.com/mouday/coding-tree1" },
     ],
 
     outlineTitle: "导航目录",
