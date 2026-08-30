@@ -207,6 +207,8 @@ a=97
 
 ## sprintf
 
+> deprecated
+
 发送格式化输出到字符串。
 
 ```cpp
