@@ -18,3 +18,21 @@ ulimit -c unlimited
 ```shell
 lldb -c  /cores/core.67020
 ```
+
+VSCode配置
+
+```json
+// .vscode/launch.json
+{
+    "version": "0.2.0",
+    "targetArchitecture": "x86_64",
+    "configurations": [
+        {
+            "name": "(CodeLLDB) Attach",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickProcess}"
+        }
+    ]
+}
+```
